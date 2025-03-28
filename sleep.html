@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sleep Quality Assessment</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Cormorant+Garamond:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --gold: #D4AF37;
+            --gold-light: #F9DF74;
+            --gold-dark: #AA8C2C;
+            --red: #8B0000;
+            --blue: #1E3F66;
+            --green: #2E5902;
+            --purple: #4B0082;
+            --brown: #654321;
+            --black: #000000;
+            --white: #ffffff;
+        }
+
+        body {
+            font-family: 'Cormorant Garamond', serif;
+            background-color: #000;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Background Stars */
+        .background-stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.1;
+            pointer-events: none;
+        }
+
+        .star {
+            position: absolute;
+            background: radial-gradient(circle at center, var(--gold) 0%, transparent 70%);
+            border-radius: 50%;
+            animation: twinkle 3s infinite linear;
+        }
+
+        @keyframes twinkle {
+            0% {
+                transform: scale(0.5);
+                opacity: 0;
+            }
+            50% {
+                opacity: 0.5;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 0;
+            }
+        }
+
+        .sleep-container {
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.2), rgba(170, 140, 44, 0.1));
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 0 30px rgba(212, 175, 55, 0.3);
+            border: 2px solid var(--gold);
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+            position: relative;
+            backdrop-filter: blur(10px);
+            margin: 20px;
+            transition: all 0.5s ease;
+            overflow: hidden;
+        }
+
+        .glow-level {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Cinzel', serif;
+            color: white;
+            font-size: 14px;
+            opacity: 0;
+            transition: all 0.5s ease;
+        }
+
+        .glow-level.show {
+            opacity: 1;
+            animation: glowPulse 2s infinite;
+        }
+
+        .glow-level.poor {
+            background: radial-gradient(circle at center, rgba(255, 68, 68, 0.8) 0%, transparent 70%);
+            box-shadow: 0 0 20px rgba(255, 68, 68, 0.5);
+        }
+
+        .glow-level.fair {
+            background: radial-gradient(circle at center, rgba(255, 187, 51, 0.8) 0%, transparent 70%);
+            box-shadow: 0 0 20px rgba(255, 187, 51, 0.5);
+        }
+
+        .glow-level.good {
+            background: radial-gradient(circle at center, rgba(0, 200, 81, 0.8) 0%, transparent 70%);
+            box-shadow: 0 0 20px rgba(0, 200, 81, 0.5);
+        }
+
+        .sleep-container.poor-glow {
+            box-shadow: 0 0 40px rgba(255, 68, 68, 0.4);
+            border-color: rgba(255, 68, 68, 0.5);
+        }
+
+        .sleep-container.fair-glow {
+            box-shadow: 0 0 40px rgba(255, 187, 51, 0.4);
+            border-color: rgba(255, 187, 51, 0.5);
+        }
+
+        .sleep-container.good-glow {
+            box-shadow: 0 0 40px rgba(0, 200, 81, 0.4);
+            border-color: rgba(0, 200, 81, 0.5);
+        }
+
+        @keyframes glowPulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        .sleep-container h1 {
+            font-family: 'Cinzel', serif;
+            color: var(--gold);
+            margin-bottom: 30px;
+            font-size: 28px;
+            text-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+        }
+
+        .sleep-input {
+            margin-bottom: 20px;
+        }
+
+        .sleep-input label {
+            display: block;
+            margin-bottom: 10px;
+            color: var(--gold);
+            font-size: 18px;
+        }
+
+        .sleep-input input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid var(--gold);
+            background: rgba(212, 175, 55, 0.1);
+            color: var(--white);
+            border-radius: 5px;
+            font-size: 16px;
+            text-align: center;
+            max-width: 200px;
+            margin: 0 auto;
+            transition: all 0.3s ease;
+        }
+
+        .sleep-input input:focus {
+            outline: none;
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.7);
+            border-color: var(--gold-light);
+            background: rgba(212, 175, 55, 0.15);
+        }
+
+        .reading-count {
+            color: var(--gold);
+            margin-bottom: 20px;
+            font-size: 18px;
+        }
+
+        .submit-btn {
+            background-color: var(--gold);
+            color: var(--black);
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-family: 'Cinzel', serif;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+            min-width: 150px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .submit-btn::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at center, rgba(255,255,255,0.2) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .submit-btn:hover::before {
+            opacity: 1;
+        }
+
+        .submit-btn:hover {
+            background-color: var(--gold-light);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(212, 175, 55, 0.7);
+        }
+
+        .result {
+            margin-top: 20px;
+            padding: 20px;
+            border-radius: 10px;
+            display: none;
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.15), rgba(170, 140, 44, 0.1));
+            border: 1px solid var(--gold);
+            backdrop-filter: blur(5px);
+        }
+
+        .result.show {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .mood-link {
+            display: inline-block;
+            margin-top: 15px;
+            color: var(--gold);
+            text-decoration: none;
+            font-family: 'Cinzel', serif;
+            transition: all 0.3s ease;
+            padding: 8px 20px;
+            border: 1px solid var(--gold);
+            border-radius: 20px;
+        }
+
+        .mood-link:hover {
+            color: var(--black);
+            background: var(--gold);
+            text-shadow: none;
+        }
+
+        .sleep-icon {
+            font-size: 40px;
+            color: var(--gold);
+            margin-bottom: 20px;
+            animation: pulse 1.5s infinite;
+            text-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        /* Home Button Styles */
+        .home-btn {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background-color: var(--gold);
+            color: var(--black);
+            border: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            font-family: 'Cinzel', serif;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
+            z-index: 1000;
+        }
+
+        .home-btn:hover {
+            background-color: var(--gold-light);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(212, 175, 55, 0.7);
+        }
+
+        .home-btn i {
+            font-size: 18px;
+        }
+
+        /* Mobile Responsive Styles */
+        @media (max-width: 480px) {
+            .sleep-container {
+                padding: 20px;
+                margin: 10px;
+                width: 95%;
+            }
+
+            .sleep-container h1 {
+                font-size: 24px;
+                margin-bottom: 20px;
+            }
+
+            .sleep-input input {
+                font-size: 18px;
+                padding: 15px;
+            }
+
+            .submit-btn {
+                padding: 15px 30px;
+                font-size: 18px;
+                width: 100%;
+                max-width: 200px;
+            }
+
+            .result {
+                padding: 15px;
+            }
+
+            .result h2 {
+                font-size: 20px;
+            }
+
+            .result p {
+                font-size: 16px;
+            }
+
+            .mood-link {
+                display: block;
+                width: 100%;
+                max-width: 200px;
+                margin: 15px auto 0;
+                text-align: center;
+            }
+
+            .star {
+                width: 15px;
+                height: 15px;
+            }
+
+            .home-btn {
+                top: 10px;
+                left: 10px;
+                padding: 10px 20px;
+                font-size: 14px;
+            }
+        }
+
+        /* Landscape Mode Adjustments */
+        @media (max-height: 500px) and (orientation: landscape) {
+            .sleep-container {
+                margin: 10px;
+                padding: 15px;
+            }
+
+            .sleep-container h1 {
+                font-size: 20px;
+                margin-bottom: 15px;
+            }
+
+            .sleep-icon {
+                font-size: 30px;
+                margin-bottom: 10px;
+            }
+
+            .sleep-input input {
+                padding: 8px;
+            }
+
+            .submit-btn {
+                padding: 8px 20px;
+                margin-top: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Home Button -->
+    <a href="index.html" class="home-btn">
+        <i class="fas fa-home"></i>
+        Home
+    </a>
+
+    <!-- Background Stars -->
+    <div class="background-stars" id="backgroundStars"></div>
+
+    <div class="sleep-container">
+        <div class="glow-level" id="glowLevel"></div>
+        <i class="fas fa-moon sleep-icon"></i>
+        <h1>Sleep Quality Assessment</h1>
+        <p class="reading-count">Reading 1 of 3</p>
+        <div class="sleep-input">
+            <label for="sleepHours">How many hours did you sleep?</label>
+            <input type="number" id="sleepHours" min="0" max="24" step="0.5" placeholder="Enter hours">
+        </div>
+        <button class="submit-btn" onclick="submitReading()">Submit Reading</button>
+        <div class="result" id="result"></div>
+    </div>
+
+    <script>
+        // Create background stars
+        function createBackgroundStars() {
+            const container = document.getElementById('backgroundStars');
+            const starCount = 20;
+            
+            for (let i = 0; i < starCount; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                const size = Math.random() * 15 + 5;
+                star.style.width = `${size}px`;
+                star.style.height = `${size}px`;
+                star.style.left = `${Math.random() * 100}%`;
+                star.style.top = `${Math.random() * 100}%`;
+                star.style.animationDelay = `${Math.random() * 3}s`;
+                container.appendChild(star);
+            }
+        }
+
+        let readings = [];
+        const readingCount = document.querySelector('.reading-count');
+        const sleepInput = document.getElementById('sleepHours');
+        const submitBtn = document.querySelector('.submit-btn');
+        const resultDiv = document.getElementById('result');
+
+        function submitReading() {
+            const reading = parseFloat(sleepInput.value);
+            
+            if (isNaN(reading) || reading < 0 || reading > 24) {
+                alert('Please enter a valid number of hours between 0 and 24');
+                return;
+            }
+
+            // Update glow level
+            updateGlowLevel(reading);
+
+            readings.push(reading);
+            sleepInput.value = '';
+
+            if (readings.length < 3) {
+                readingCount.textContent = `Reading ${readings.length + 1} of 3`;
+            } else {
+                const average = readings.reduce((a, b) => a + b, 0) / 3;
+                determineMood(average);
+                submitBtn.style.display = 'none';
+                sleepInput.style.display = 'none';
+            }
+        }
+
+        function updateGlowLevel(reading) {
+            const glowLevel = document.getElementById('glowLevel');
+            const container = document.querySelector('.sleep-container');
+            glowLevel.classList.add('show');
+
+            // Remove all glow classes
+            container.classList.remove('poor-glow', 'fair-glow', 'good-glow');
+            glowLevel.classList.remove('poor', 'fair', 'good');
+
+            if (reading < 6) {
+                glowLevel.classList.add('poor');
+                container.classList.add('poor-glow');
+                glowLevel.innerHTML = '⚠️ Poor';
+            } else if (reading < 8) {
+                glowLevel.classList.add('fair');
+                container.classList.add('fair-glow');
+                glowLevel.innerHTML = '⚡ Fair';
+            } else {
+                glowLevel.classList.add('good');
+                container.classList.add('good-glow');
+                glowLevel.innerHTML = '✨ Good';
+            }
+
+            // Add reading value
+            glowLevel.innerHTML += `<div style="font-size: 12px; margin-top: 5px;">${reading} hrs</div>`;
+        }
+
+        function determineMood(average) {
+            let mood, link;
+            
+            if (average < 6) {
+                mood = "Stressed";
+                link = "stress.html";
+            } else if (average < 8) {
+                mood = "Demotivated";
+                link = "demotivated.html";
+            } else {
+                mood = "Happy";
+                link = "happy.html";
+            }
+
+            resultDiv.innerHTML = `
+                <h2 style="color: var(--gold); margin-bottom: 15px;">Your Average Sleep: ${average.toFixed(1)} hours</h2>
+                <p style="margin-bottom: 20px;">Based on your sleep duration, you appear to be feeling ${mood}.</p>
+                <a href="${link}" class="mood-link">Explore ${mood} Mantras →</a>
+            `;
+            resultDiv.classList.add('show');
+        }
+
+        // Allow Enter key to submit reading
+        sleepInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                submitReading();
+            }
+        });
+
+        // Initialize background stars
+        createBackgroundStars();
+    </script>
+</body>
+</html> 

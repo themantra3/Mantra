@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Temple Ambience Mode</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #1a0f3c, #2d1b4e);
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 2rem;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        #particles-js {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+
+        .container {
+            max-width: 800px;
+            width: 100%;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+            background: rgba(26, 15, 60, 0.8);
+            padding: 2rem;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+        }
+
+        h2 {
+            font-family: 'Cinzel', serif;
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            background: linear-gradient(45deg, #ffd700, #ffa500, #ffd700);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            animation: shine 3s linear infinite;
+        }
+
+        @keyframes shine {
+            to { background-position: 200% center; }
+        }
+
+        .temple-select {
+            width: 100%;
+            max-width: 400px;
+            padding: 1rem;
+            font-size: 1.1rem;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            color: white;
+            margin-bottom: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .temple-select:hover {
+            border-color: #ffd700;
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+        }
+
+        .temple-select option {
+            background: #1a0f3c;
+            color: white;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-bottom: 2rem;
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Cinzel', serif;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: 0.5s;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn-play {
+            background: linear-gradient(45deg, #ff4d4d, #ff0000);
+            color: white;
+        }
+
+        .btn-stop {
+            background: linear-gradient(45deg, #4a4a4a, #2d2d2d);
+            color: white;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .temple-info {
+            background: rgba(26, 15, 60, 0.9);
+            padding: 1.5rem;
+            border-radius: 15px;
+            margin-top: 2rem;
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            display: none;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .temple-info::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent, rgba(255, 215, 0, 0.1), transparent);
+            transform: translateX(-100%);
+            transition: 0.5s;
+        }
+
+        .temple-info:hover::before {
+            transform: translateX(100%);
+        }
+
+        .temple-info.visible {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .temple-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: #ffd700;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+        }
+
+        .temple-description {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: #e0e0e0;
+            margin-top: 1rem;
+        }
+
+        .volume-control {
+            margin-top: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 215, 0, 0.2);
+        }
+
+        .volume-slider {
+            width: 200px;
+            height: 4px;
+            -webkit-appearance: none;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 2px;
+            outline: none;
+        }
+
+        .volume-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 12px;
+            height: 12px;
+            background: #ffd700;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+        }
+
+        .playing-indicator {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(26, 15, 60, 0.9);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            display: none;
+            align-items: center;
+            gap: 0.5rem;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(255, 215, 0, 0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(255, 215, 0, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(255, 215, 0, 0); }
+        }
+
+        .playing-indicator i {
+            color: #ffd700;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            h2 {
+                font-size: 2rem;
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .playing-indicator {
+                top: auto;
+                bottom: 20px;
+                right: 20px;
+                left: 20px;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="particles-js"></div>
+
+    <div class="container">
+        <h2>Temple Ambience Mode</h2>
+        
+        <select id="templeSelect" class="temple-select">
+            <option value="" disabled selected>Select a Temple</option>
+            <option value="tirupati">Tirupati Balaji</option>
+            <option value="kashi">Kashi Vishwanath</option>
+            <option value="madurai">Madurai Meenakshi</option>
+            <option value="puri">Puri Jagannath</option>
+            <option value="kedarnath">Kedarnath</option>
+        </select>
+
+        <div class="button-group">
+            <button id="playButton" class="btn btn-play">
+                <i class="fas fa-play"></i>
+                Play Ambience
+            </button>
+            <button id="stopButton" class="btn btn-stop">
+                <i class="fas fa-stop"></i>
+                Stop
+            </button>
+        </div>
+
+        <div class="volume-control">
+            <i class="fas fa-volume-up" style="color: #ffd700;"></i>
+            <input type="range" class="volume-slider" min="0" max="100" value="100" id="volumeSlider">
+        </div>
+
+        <div class="temple-info" id="templeInfo">
+            <div class="temple-icon">
+                <i class="fas fa-temple"></i>
+            </div>
+            <div class="temple-description" id="templeDescription"></div>
+        </div>
+    </div>
+
+    <div class="playing-indicator" id="playingIndicator">
+        <i class="fas fa-music"></i>
+        <span>Now Playing: <span id="currentTemple"></span></span>
+    </div>
+
+    <audio id="templeAudio" loop></audio>
+
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script>
+        // Initialize particles with updated colors
+        document.addEventListener('DOMContentLoaded', function() {
+            if (typeof particlesJS !== 'undefined') {
+                particlesJS('particles-js', {
+                    particles: {
+                        number: { value: 50, density: { enable: true, value_area: 800 } },
+                        color: { value: '#ffd700' },
+                        shape: { type: 'circle' },
+                        opacity: { value: 0.6, random: false },
+                        size: { value: 3, random: true },
+                        line_linked: {
+                            enable: true,
+                            distance: 150,
+                            color: '#ffd700',
+                            opacity: 0.3,
+                            width: 1
+                        },
+                        move: {
+                            enable: true,
+                            speed: 2,
+                            direction: 'none',
+                            random: false,
+                            straight: false,
+                            out_mode: 'out',
+                            bounce: false
+                        }
+                    },
+                    interactivity: {
+                        detect_on: 'canvas',
+                        events: {
+                            onhover: { enable: true, mode: 'repulse' },
+                            onclick: { enable: true, mode: 'push' },
+                            resize: true
+                        }
+                    },
+                    retina_detect: true
+                });
+            }
+
+            const templeDescriptions = {
+                tirupati: "Sri Venkateswara Temple, Tirupati - One of the most sacred temples in Hinduism, dedicated to Lord Venkateswara. Known for its magnificent architecture and spiritual significance.",
+                kashi: "Kashi Vishwanath Temple, Varanasi - One of the most revered temples dedicated to Lord Shiva. Located on the banks of the holy Ganges, it's a center of spiritual enlightenment.",
+                madurai: "Meenakshi Temple, Madurai - A historic temple dedicated to Goddess Meenakshi and Lord Sundareswarar. Famous for its stunning architecture and cultural significance.",
+                puri: "Jagannath Temple, Puri - One of the Char Dham pilgrimage sites, dedicated to Lord Jagannath. Known for its unique rituals and spiritual atmosphere.",
+                kedarnath: "Kedarnath Temple - One of the twelve Jyotirlingas, dedicated to Lord Shiva. Located in the Himalayas, it's a place of immense spiritual power."
+            };
+
+            const templeNames = {
+                tirupati: "Tirupati Balaji",
+                kashi: "Kashi Vishwanath",
+                madurai: "Madurai Meenakshi",
+                puri: "Puri Jagannath",
+                kedarnath: "Kedarnath"
+            };
+
+            const templeSelect = document.getElementById('templeSelect');
+            const playButton = document.getElementById('playButton');
+            const stopButton = document.getElementById('stopButton');
+            const volumeSlider = document.getElementById('volumeSlider');
+            const templeAudio = document.getElementById('templeAudio');
+            const templeInfo = document.getElementById('templeInfo');
+            const templeDescription = document.getElementById('templeDescription');
+            const playingIndicator = document.getElementById('playingIndicator');
+            const currentTempleDisplay = document.getElementById('currentTemple');
+
+            // Set initial volume
+            templeAudio.volume = volumeSlider.value / 100;
+
+            function updateTempleInfo(temple) {
+                if (temple) {
+                    templeDescription.textContent = templeDescriptions[temple];
+                    templeInfo.classList.add('visible');
+                } else {
+                    templeInfo.classList.remove('visible');
+                }
+            }
+
+            async function playTempleAmbience() {
+                const temple = templeSelect.value;
+                
+                if (!temple) {
+                    alert("Please select a temple!");
+                    return;
+                }
+
+                // Audio URLs for different temples
+                const audioUrls = {
+                    tirupati: "songs/tirumala.mp3",
+                    kashi: "songs/tirumala.mp3",
+                    madurai: "songs/tirumala.mp3",
+                    puri: "songs/tirumala.mp3",
+                    kedarnath: "songs/tirumala.mp3"
+                };
+
+                try {
+                    // Show loading state
+                    playingIndicator.style.display = 'flex';
+                    currentTempleDisplay.textContent = 'Loading...';
+
+                    // Set the audio source
+                    templeAudio.src = audioUrls[temple];
+                    
+                    // Attempt to play the audio
+                    await templeAudio.play();
+                    
+                    // Update UI on success
+                    updateTempleInfo(temple);
+                    currentTempleDisplay.textContent = templeNames[temple];
+                } catch (error) {
+                    console.error('Error playing audio:', error);
+                    alert('Error playing audio. Please make sure the audio file exists and try again.');
+                    playingIndicator.style.display = 'none';
+                    templeInfo.classList.remove('visible');
+                }
+            }
+
+            function stopTempleAmbience() {
+                templeAudio.pause();
+                templeAudio.currentTime = 0;
+                templeInfo.classList.remove('visible');
+                playingIndicator.style.display = 'none';
+            }
+
+            function setVolume(value) {
+                templeAudio.volume = value / 100;
+            }
+
+            // Event listeners
+            playButton.addEventListener('click', playTempleAmbience);
+            stopButton.addEventListener('click', stopTempleAmbience);
+            volumeSlider.addEventListener('input', () => setVolume(volumeSlider.value));
+            
+            templeSelect.addEventListener('change', function() {
+                updateTempleInfo(this.value);
+                stopTempleAmbience();
+            });
+
+            // Keyboard shortcuts
+            document.addEventListener('keydown', (e) => {
+                if (e.code === 'Space') {
+                    e.preventDefault();
+                    if (templeAudio.paused) {
+                        playTempleAmbience();
+                    } else {
+                        stopTempleAmbience();
+                    }
+                } else if (e.code === 'Escape') {
+                    stopTempleAmbience();
+                }
+            });
+
+            // Handle audio ending (though loop should prevent this)
+            templeAudio.addEventListener('ended', () => {
+                templeAudio.currentTime = 0;
+                templeAudio.play().catch(error => {
+                    console.error('Error replaying audio:', error);
+                });
+            });
+        });
+    </script>
+</body>
+</html>

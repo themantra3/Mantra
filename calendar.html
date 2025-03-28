@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cosmic Frequency Calendar</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Space Mono', monospace;
+            background-color: #4B2C20;
+            color: #FFD700;
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            background-color: #3E1F14;
+            border-radius: 15px;
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background-color: #3E1F14;
+            padding: 20px;
+            text-align: center;
+            position: relative;
+        }
+
+        .title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.5rem;
+            color: #FFD700;
+        }
+
+        .home-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background-color: #5A3825;
+            border: 1px solid #FFD700;
+            border-radius: 8px;
+            padding: 10px 20px;
+            color: #FFD700;
+            font-family: 'Space Mono', monospace;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .home-button:hover {
+            background-color: #FFD700;
+            color: #5A3825;
+        }
+
+        .calendar-container {
+            display: grid;
+            grid-gap: 10px;
+            padding: 20px;
+        }
+
+        .day {
+            background-color: #5A3825;
+            border: 1px solid #FFD700;
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            color: #FFD700;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .day:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+        }
+
+        .day-number {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .frequency {
+            font-size: 0.9rem;
+        }
+
+        .description {
+            font-size: 0.7rem;
+            margin-top: 5px;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.8);
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .modal-content {
+            background-color: #3E1F14;
+            border-radius: 15px;
+            max-width: 600px;
+            width: 90%;
+            padding: 30px;
+            text-align: center;
+            position: relative;
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+            color: #FFD700;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 2rem;
+            color: #FFD700;
+            cursor: pointer;
+        }
+
+        /* Responsive Styles */
+        @media screen and (min-width: 1200px) {
+            .calendar-container {
+                grid-template-columns: repeat(7, 1fr);
+            }
+        }
+
+        @media screen and (min-width: 992px) and (max-width: 1199px) {
+            .calendar-container {
+                grid-template-columns: repeat(5, 1fr);
+            }
+        }
+
+        @media screen and (min-width: 768px) and (max-width: 991px) {
+            .calendar-container {
+                grid-template-columns: repeat(4, 1fr);
+            }
+            .title {
+                font-size: 2rem;
+            }
+        }
+
+        @media screen and (min-width: 576px) and (max-width: 767px) {
+            .calendar-container {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            .title {
+                font-size: 1.8rem;
+            }
+            .day-number {
+                font-size: 1rem;
+            }
+            .frequency {
+                font-size: 0.8rem;
+            }
+            .description {
+                font-size: 0.6rem;
+            }
+        }
+
+        @media screen and (max-width: 575px) {
+            .calendar-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .title {
+                font-size: 1.5rem;
+            }
+            .day-number {
+                font-size: 0.9rem;
+            }
+            .frequency {
+                font-size: 0.7rem;
+            }
+            .description {
+                font-size: 0.5rem;
+            }
+        }
+        .home-button {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 10px;
+        }
+    
+        .home-button i {
+            font-size: 1.2rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <button class="home-button" onclick="window.location.href='index.html'">
+                <i class="fas fa-home"></i>
+            </button>
+            <h1 class="title">Cosmic Frequency Calendar</h1>
+        </div>
+        <div id="calendar" class="calendar-container"></div>
+    </div>
+
+    <div id="frequencyModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal()">&times;</span>
+            <h2 id="modalTitle"></h2>
+            <p id="modalFrequency"></p>
+            <p id="modalDescription"></p>
+            <canvas id="frequencyChart" width="400" height="200"></canvas>
+        </div>
+    </div>
+
+    <script>
+        
+        const frequencies = [
+            { day: 1, freq: 174, desc: "Relieves pain and stress", fullDesc: "The 174 Hz frequency is associated with healing and pain relief. It is believed to reduce stress and provide a sense of security and comfort." },
+            { day: 2, freq: 285, desc: "Healing and rejuvenation", fullDesc: "The 285 Hz frequency is linked to healing and cellular regeneration. It is thought to help repair tissue and promote overall physical healing." },
+            { day: 3, freq: 396, desc: "Removes fear and guilt", fullDesc: "The 396 Hz frequency is known for liberating negative emotions, particularly fear and guilt. It helps in clearing subconscious blockages." },
+            { day: 4, freq: 417, desc: "Facilitates change", fullDesc: "The 417 Hz frequency supports positive transformation, helping to clear destructive patterns and facilitate personal growth and change." },
+            { day: 5, freq: 432, desc: "Natural frequency of the universe", fullDesc: "The 432 Hz frequency is considered the natural harmonic of the universe. It is believed to create a sense of peace and well-being." },
+            { day: 6, freq: 528, desc: "DNA repair and transformation", fullDesc: "The 528 Hz frequency is known as the 'miracle tone' and is associated with DNA repair, cellular healing, and profound transformation." },
+            { day: 7, freq: 639, desc: "Harmonizing relationships", fullDesc: "The 639 Hz frequency focuses on healing relationships, promoting communication, understanding, and reconnection." },
+            { day: 8, freq: 741, desc: "Detoxification and clarity", fullDesc: "The 741 Hz frequency aids in problem-solving, self-expression, and helps in cleansing the body and mind from toxins." },
+            { day: 9, freq: 852, desc: "Spiritual awakening", fullDesc: "The 852 Hz frequency is linked to spiritual awakening, intuition, and returning to spiritual order." },
+            { day: 10, freq: 963, desc: "Higher consciousness", fullDesc: "The 963 Hz frequency is associated with activation of the pineal gland and connection to higher spiritual realms." }
+        ];
+
+        let frequencyChart = null;
+
+        function generateCalendar() {
+            const date = new Date();
+            const year = date.getFullYear();
+            const month = date.getMonth();
+            const firstDay = new Date(year, month, 1).getDay();
+            const daysInMonth = new Date(year, month + 1, 0).getDate();
+            
+            const calendarEl = document.getElementById("calendar");
+            calendarEl.innerHTML = "";
+            
+            for (let day = 1; day <= daysInMonth; day++) {
+                let freqData = frequencies[(day - 1) % frequencies.length];
+                const dayEl = document.createElement('div');
+                dayEl.classList.add('day');
+                dayEl.innerHTML = `
+                    <div class="day-number">${day}</div>
+                    <div class="frequency">${freqData.freq} Hz</div>
+                    <div class="description">${freqData.desc}</div>
+                `;
+                dayEl.addEventListener('click', () => openModal(day, freqData));
+                calendarEl.appendChild(dayEl);
+            }
+        }
+
+        function openModal(day, freqData) {
+            const modal = document.getElementById('frequencyModal');
+            const modalTitle = document.getElementById('modalTitle');
+            const modalFrequency = document.getElementById('modalFrequency');
+            const modalDescription = document.getElementById('modalDescription');
+            
+            modalTitle.textContent = `Day ${day}: ${freqData.freq} Hz Frequency`;
+            modalFrequency.textContent = `Frequency: ${freqData.freq} Hz`;
+            modalDescription.textContent = freqData.fullDesc;
+            
+            modal.style.display = 'flex';
+            
+            // Destroy existing chart if it exists
+            if (frequencyChart) {
+                frequencyChart.destroy();
+            }
+            
+            // Create new frequency chart
+            const ctx = document.getElementById('frequencyChart').getContext('2d');
+            frequencyChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['Start', 'Peak', 'End'],
+                    datasets: [{
+                        label: 'Frequency Intensity',
+                        data: [0, freqData.freq, 0],
+                        borderColor: '#FFD700',
+                        backgroundColor: 'rgba(255, 215, 0, 0.2)',
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: { display: false }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Frequency (Hz)',
+                                color: '#FFD700'
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('frequencyModal');
+            modal.style.display = 'none';
+            
+            // Destroy chart when modal is closed
+            if (frequencyChart) {
+                frequencyChart.destroy();
+            }
+        }
+
+        // Generate calendar on page load
+        generateCalendar();
+
+        // Regenerate calendar if window is resized
+        window.addEventListener('resize', generateCalendar);
+    </script>
+</body>
+</html>

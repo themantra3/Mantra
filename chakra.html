@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mystical Chakra Guide</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #0a0a1a, #1a1a2a);
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 2rem;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="1" fill="rgba(255,255,255,0.1)"/></svg>') repeat;
+            opacity: 0.1;
+            z-index: 0;
+        }
+
+        .container {
+            max-width: 1200px;
+            width: 100%;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header {
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .home-icon {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            font-size: 2rem;
+            color: #ffd700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 1000;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+        }
+
+        .home-icon:hover {
+            transform: scale(1.1);
+            color: #ffa500;
+        }
+
+        h1 {
+            font-family: 'Cinzel', serif;
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(45deg, #ffd700, #ffa500);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            position: relative;
+            display: inline-block;
+            letter-spacing: 2px;
+            animation: fadeInDown 1s ease;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        h1::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, #ffd700, transparent);
+        }
+
+        .subtitle {
+            color: #ccc;
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+            line-height: 1.6;
+            font-style: italic;
+            animation: fadeIn 1s ease 0.3s both;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        .chakra-info {
+            background: rgba(0, 0, 0, 0.5);
+            padding: 1.5rem;
+            border-radius: 15px;
+            margin-bottom: 2rem;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            position: relative;
+            animation: fadeIn 1s ease 0.6s both;
+        }
+
+        .chakra-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            padding: 1rem;
+            animation: fadeIn 1s ease 0.9s both;
+        }
+
+        .chakra-button {
+            padding: 2rem;
+            border-radius: 20px;
+            border: none;
+            cursor: pointer;
+            font-size: 1.2rem;
+            font-weight: 500;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 180px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(5px);
+        }
+
+        .chakra-button.playing {
+            animation: pulse 2s infinite;
+            box-shadow: 0 0 30px rgba(255, 255, 255, 0.3);
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .chakra-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            opacity: 0.9;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+        }
+
+        .chakra-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: 0.5s;
+        }
+
+        .chakra-button:hover::before {
+            left: 100%;
+        }
+
+        .chakra-button:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+        }
+
+        .chakra-button:active {
+            transform: translateY(0) scale(0.98);
+        }
+
+        .root { background: linear-gradient(135deg, #8B0000, #FF0000); }
+        .sacral { background: linear-gradient(135deg, #FF4500, #FFA500); }
+        .solar { background: linear-gradient(135deg, #FFD700, #FFA500); color: #000; }
+        .heart { background: linear-gradient(135deg, #006400, #32CD32); }
+        .throat { background: linear-gradient(135deg, #000080, #4169E1); }
+        .third-eye { background: linear-gradient(135deg, #4B0082, #8A2BE2); }
+        .crown { background: linear-gradient(135deg, #800080, #DDA0DD); }
+
+        .frequency {
+            font-size: 1rem;
+            opacity: 0.9;
+            margin-top: 0.5rem;
+            font-weight: 500;
+            font-family: 'Cinzel', serif;
+        }
+
+        .audio-controls {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.8);
+            padding: 1rem 2rem;
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            z-index: 1000;
+            font-family: 'Cinzel', serif;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .audio-controls.visible {
+            opacity: 1;
+        }
+
+        .control-button {
+            background: none;
+            border: none;
+            color: #ffd700;
+            cursor: pointer;
+            font-size: 1.2rem;
+            padding: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .control-button:hover {
+            color: #ffa500;
+            transform: scale(1.1);
+        }
+
+        .volume-slider {
+            width: 100px;
+            height: 4px;
+            -webkit-appearance: none;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 2px;
+            outline: none;
+        }
+
+        .volume-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 12px;
+            height: 12px;
+            background: #ffd700;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        .now-playing {
+            color: #ffd700;
+            font-size: 0.9rem;
+            margin-right: 1rem;
+        }
+
+        @media (max-width: 768px) {
+            .chakra-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+
+            .chakra-button {
+                padding: 1.5rem;
+                min-height: 150px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <a href="index.html" class="home-icon">
+        <i class="fas fa-home"></i>
+    </a>
+
+    <div class="container">
+        <div class="header">
+            <h1>Mystical Chakra Guide</h1>
+            <p class="subtitle">Explore the ancient wisdom of the seven sacred chakras</p>
+            <div class="chakra-info">
+                <p>Each chakra represents a unique energy center in your body, with its own frequency and spiritual significance. Discover the ancient wisdom of these sacred centers.</p>
+            </div>
+        </div>
+        
+        <div class="chakra-grid">
+            <button class="chakra-button root" onclick="playChakra(396)">
+                <i class="fas fa-mountain chakra-icon"></i>
+                Root Chakra
+                <div class="frequency">396 Hz - Muladhara</div>
+            </button>
+            <button class="chakra-button sacral" onclick="playChakra(417)">
+                <i class="fas fa-water chakra-icon"></i>
+                Sacral Chakra
+                <div class="frequency">417 Hz - Svadhisthana</div>
+            </button>
+            <button class="chakra-button solar" onclick="playChakra(528)">
+                <i class="fas fa-sun chakra-icon"></i>
+                Solar Plexus
+                <div class="frequency">528 Hz - Manipura</div>
+            </button>
+            <button class="chakra-button heart" onclick="playChakra(639)">
+                <i class="fas fa-heart chakra-icon"></i>
+                Heart Chakra
+                <div class="frequency">639 Hz - Anahata</div>
+            </button>
+            <button class="chakra-button throat" onclick="playChakra(741)">
+                <i class="fas fa-comment-alt chakra-icon"></i>
+                Throat Chakra
+                <div class="frequency">741 Hz - Vishuddha</div>
+            </button>
+            <button class="chakra-button third-eye" onclick="playChakra(852)">
+                <i class="fas fa-eye chakra-icon"></i>
+                Third Eye Chakra
+                <div class="frequency">852 Hz - Ajna</div>
+            </button>
+            <button class="chakra-button crown" onclick="playChakra(963)">
+                <i class="fas fa-crown chakra-icon"></i>
+                Crown Chakra
+                <div class="frequency">963 Hz - Sahasrara</div>
+            </button>
+        </div>
+    </div>
+
+    <div class="audio-controls" id="audioControls">
+        <div class="now-playing" id="nowPlaying">Now Playing: </div>
+        <button class="control-button" onclick="pauseSound()" id="pauseButton">
+            <i class="fas fa-pause"></i>
+        </button>
+        <button class="control-button" onclick="stopSound()">
+            <i class="fas fa-stop"></i>
+        </button>
+        <input type="range" class="volume-slider" min="0" max="100" value="100" onchange="setVolume(this.value)">
+    </div>
+
+    <audio id="chakraSound" loop></audio>
+
+    <script>
+        let currentButton = null;
+        const audio = document.getElementById("chakraSound");
+        const audioControls = document.getElementById("audioControls");
+        const nowPlaying = document.getElementById("nowPlaying");
+        const pauseButton = document.getElementById("pauseButton");
+
+        function playChakra(frequency) {
+            if (currentButton) {
+                currentButton.classList.remove('playing');
+            }
+
+            currentButton = event.currentTarget;
+            currentButton.classList.add('playing');
+
+            const chakraName = currentButton.textContent.trim().split('\n')[0];
+            nowPlaying.textContent = `Now Playing: ${chakraName}`;
+            audioControls.classList.add('visible');
+
+            audio.src = `https://www.generative.fm/music/${frequency}.mp3`;
+            audio.play();
+            pauseButton.innerHTML = '<i class="fas fa-pause"></i>';
+        }
+
+        function stopSound() {
+            audio.pause();
+            audio.currentTime = 0;
+            if (currentButton) {
+                currentButton.classList.remove('playing');
+                currentButton = null;
+            }
+            audioControls.classList.remove('visible');
+            pauseButton.innerHTML = '<i class="fas fa-pause"></i>';
+        }
+
+        function pauseSound() {
+            if (audio.paused) {
+                audio.play();
+                if (currentButton) {
+                    currentButton.classList.add('playing');
+                }
+                pauseButton.innerHTML = '<i class="fas fa-pause"></i>';
+            } else {
+                audio.pause();
+                if (currentButton) {
+                    currentButton.classList.remove('playing');
+                }
+                pauseButton.innerHTML = '<i class="fas fa-play"></i>';
+            }
+        }
+
+        function setVolume(value) {
+            audio.volume = value / 100;
+        }
+
+        audio.addEventListener('ended', () => {
+            if (currentButton) {
+                currentButton.classList.remove('playing');
+                currentButton = null;
+            }
+            audioControls.classList.remove('visible');
+            pauseButton.innerHTML = '<i class="fas fa-pause"></i>';
+        });
+
+        // Add keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            if (e.code === 'Space') {
+                e.preventDefault();
+                pauseSound();
+            } else if (e.code === 'Escape') {
+                stopSound();
+            }
+        });
+    </script>
+</body>
+</html>
