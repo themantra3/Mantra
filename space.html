@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cosmic Soundscape</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-dark: #0a0a1a;
+            --text-light: #e0e0ff;
+            --accent-blue: #3498db;
+            --accent-purple: #8e44ad;
+            --planet-glow: rgba(52, 152, 219, 0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            background: linear-gradient(135deg, #0a0a1a, #1a1a3a);
+            color: var(--text-light);
+            line-height: 1.6;
+            overflow-x: hidden;
+            min-height: 100vh;
+            position: relative;
+            background-image: url('space.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, transparent 0%, rgba(0,0,0,0.8) 100%);
+            pointer-events: none;
+        }
+
+        .cosmic-container {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .title-section {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding: 2rem;
+        }
+
+        .title-section h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            background: linear-gradient(45deg, #ffd700, #ff4500, #3498db);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+            margin-bottom: 1rem;
+        }
+
+        .title-section p {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.8);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .solar-system {
+            flex: 1;
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 2rem;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            padding: 2rem;
+        }
+
+        .planet-grid {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            position: relative;
+        }
+
+        .planet {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            transition: all 0.4s ease;
+            box-shadow: 0 0 30px rgba(255, 255, 255, 0.1);
+            overflow: hidden;
+        }
+
+        .planet::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            filter: blur(10px);
+            opacity: 0.5;
+            transition: all 0.4s ease;
+            z-index: 1;
+        }
+
+        /* Sun glow */
+        .planet-grid[data-planet="sun"] .planet::before {
+            background: radial-gradient(#ffd700, #ff4500);
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.5);
+        }
+
+        /* Mercury glow */
+        .planet-grid[data-planet="mercury"] .planet::before {
+            background: linear-gradient(#888, #555);
+            box-shadow: 0 0 30px rgba(136, 136, 136, 0.5);
+        }
+
+        /* Venus glow */
+        .planet-grid[data-planet="venus"] .planet::before {
+            background: linear-gradient(#e6b800, #b88700);
+            box-shadow: 0 0 30px rgba(230, 184, 0, 0.5);
+        }
+
+        /* Earth glow */
+        .planet-grid[data-planet="earth"] .planet::before {
+            background: linear-gradient(#4d79ff, #1a47b8);
+            box-shadow: 0 0 30px rgba(77, 121, 255, 0.5);
+        }
+
+        /* Mars glow */
+        .planet-grid[data-planet="mars"] .planet::before {
+            background: linear-gradient(#ff4d4d, #aa0000);
+            box-shadow: 0 0 30px rgba(255, 77, 77, 0.5);
+        }
+
+        /* Jupiter glow */
+        .planet-grid[data-planet="jupiter"] .planet::before {
+            background: linear-gradient(#ffa64d, #ff6b00);
+            box-shadow: 0 0 30px rgba(255, 166, 77, 0.5);
+        }
+
+        /* Saturn glow */
+        .planet-grid[data-planet="saturn"] .planet::before {
+            background: linear-gradient(#ffd700, #b88700);
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.5);
+        }
+
+        .planet img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            transition: all 0.4s ease;
+            position: relative;
+            z-index: 2;
+        }
+
+        .planet:hover {
+            transform: scale(1.2) translateY(-10px);
+        }
+
+        /* Enhanced glow on hover */
+        .planet-grid[data-planet="sun"] .planet:hover {
+            box-shadow: 0 0 50px rgba(255, 215, 0, 0.7);
+        }
+        .planet-grid[data-planet="mercury"] .planet:hover {
+            box-shadow: 0 0 50px rgba(136, 136, 136, 0.7);
+        }
+        .planet-grid[data-planet="venus"] .planet:hover {
+            box-shadow: 0 0 50px rgba(230, 184, 0, 0.7);
+        }
+        .planet-grid[data-planet="earth"] .planet:hover {
+            box-shadow: 0 0 50px rgba(77, 121, 255, 0.7);
+        }
+        .planet-grid[data-planet="mars"] .planet:hover {
+            box-shadow: 0 0 50px rgba(255, 77, 77, 0.7);
+        }
+        .planet-grid[data-planet="jupiter"] .planet:hover {
+            box-shadow: 0 0 50px rgba(255, 166, 77, 0.7);
+        }
+        .planet-grid[data-planet="saturn"] .planet:hover {
+            box-shadow: 0 0 50px rgba(255, 215, 0, 0.7);
+        }
+
+        .planet.active {
+            animation: pulse 2s infinite;
+        }
+
+        .planet-name {
+            margin-top: 1rem;
+            font-size: 1rem;
+            text-align: center;
+            opacity: 0.8;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: all 0.3s ease;
+        }
+
+        .planet-grid:hover .planet-name {
+            opacity: 1;
+            transform: translateY(5px);
+        }
+
+        .details-panel {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(20, 20, 40, 0.95);
+            border-radius: 20px;
+            padding: 2rem;
+            max-width: 600px;
+            width: 90%;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.4s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .details-panel.visible {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) translateY(-20px);
+        }
+
+        .details-panel h2 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(45deg, #3498db, #8e44ad);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .details-panel p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .audio-controls {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        #playPauseBtn {
+            background: linear-gradient(45deg, #3498db, #8e44ad);
+            border: none;
+            padding: 0.8rem 2rem;
+            border-radius: 30px;
+            color: white;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Space Grotesk', sans-serif;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        #playPauseBtn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
+        }
+
+        .volume-slider {
+            -webkit-appearance: none;
+            width: 200px;
+            height: 6px;
+            background: rgba(255,255,255,0.1);
+            outline: none;
+            border-radius: 3px;
+        }
+
+        .volume-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 18px;
+            height: 18px;
+            background: linear-gradient(45deg, #3498db, #8e44ad);
+            cursor: pointer;
+            border-radius: 50%;
+            box-shadow: 0 0 10px rgba(52, 152, 219, 0.5);
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .planet-grid {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .planet-grid:nth-child(1) { animation-delay: 0s; }
+        .planet-grid:nth-child(2) { animation-delay: 1s; }
+        .planet-grid:nth-child(3) { animation-delay: 2s; }
+        .planet-grid:nth-child(4) { animation-delay: 3s; }
+        .planet-grid:nth-child(5) { animation-delay: 4s; }
+        .planet-grid:nth-child(6) { animation-delay: 5s; }
+        .planet-grid:nth-child(7) { animation-delay: 6s; }
+
+        @media (max-width: 1024px) {
+            .cosmic-container {
+                flex-direction: column;
+            }
+
+            .solar-system {
+                grid-template-columns: repeat(3, 1fr);
+                grid-template-rows: repeat(3, auto);
+                gap: 1.5rem;
+            }
+
+            .planet {
+                width: 90px;
+                height: 90px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .solar-system {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .planet {
+                width: 70px;
+                height: 70px;
+            }
+
+            .details-panel {
+                padding: 1.5rem;
+            }
+
+            .details-panel h2 {
+                font-size: 1.5rem;
+            }
+
+            .title-section h1 {
+                font-size: 2.5rem;
+            }
+
+            .home-button {
+                top: 10px;
+                left: 10px;
+                width: 40px;
+                height: 40px;
+            }
+
+            .home-button i {
+                font-size: 1.2rem;
+            }
+        }
+
+        .home-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 1000;
+            backdrop-filter: blur(5px);
+        }
+
+        .home-button:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: scale(1.1);
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+        }
+
+        .home-button i {
+            color: white;
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .home-button:hover i {
+            transform: scale(1.2);
+        }
+    </style>
+</head>
+<body>
+    <div class="cosmic-container">
+        <a href="index.html" class="home-button">
+            <i class="fas fa-home"></i>
+        </a>
+        <div class="title-section">
+            <h1>Cosmic Soundscape</h1>
+            <p>Click on any planet to experience its unique cosmic sounds</p>
+        </div>
+        <div class="solar-system" id="solarSystem">
+            <div class="planet-grid" data-planet="sun">
+                <div class="planet">
+                    <img src="sun.png" alt="Sun">
+                </div>
+                <div class="planet-name">Sun</div>
+            </div>
+            <div class="planet-grid" data-planet="mercury">
+                <div class="planet">
+                    <img src="mercury.png" alt="Mercury">
+                </div>
+                <div class="planet-name">Mercury</div>
+            </div>
+            <div class="planet-grid" data-planet="venus">
+                <div class="planet">
+                    <img src="venus.webp" alt="Venus">
+                </div>
+                <div class="planet-name">Venus</div>
+            </div>
+            <div class="planet-grid" data-planet="earth">
+                <div class="planet">
+                    <img src="earth.png" alt="Earth">
+                </div>
+                <div class="planet-name">Earth</div>
+            </div>
+            <div class="planet-grid" data-planet="mars">
+                <div class="planet">
+                    <img src="mars.png" alt="Mars">
+                </div>
+                <div class="planet-name">Mars</div>
+            </div>
+            <div class="planet-grid" data-planet="jupiter">
+                <div class="planet">
+                    <img src="jupiter.png" alt="Jupiter">
+                </div>
+                <div class="planet-name">Jupiter</div>
+            </div>
+            <div class="planet-grid" data-planet="saturn">
+                <div class="planet">
+                    <img src="saturn.jpg" alt="Saturn">
+                </div>
+                <div class="planet-name">Saturn</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="details-panel" id="detailsPanel">
+        <h2 id="planetTitle">Select a Planet</h2>
+        <p id="planetDescription">Explore cosmic sounds from different celestial bodies</p>
+        <div class="audio-controls">
+            <button id="playPauseBtn">▶️ Play</button>
+            <input type="range" min="0" max="100" value="50" class="volume-slider" id="volumeSlider">
+        </div>
+    </div>
+
+    <script>
+        const planetData = {
+            sun: {
+                audioFile: "audio/sun.mp3"
+            },
+            mercury: {
+                audioFile: "audio/mercury.mp3"
+            },
+            venus: {
+                audioFile: "audio/venus.mp3"
+            },
+            earth: {
+                audioFile: "audio/earth.mp3"
+            },
+            mars: {
+                audioFile: "audio/mars.mp3"
+            },
+            jupiter: {
+                audioFile: "audio/jupiter.mp3"
+            },
+            saturn: {
+                audioFile: "audio/saturn.mp3"
+            }
+        };
+
+        let currentAudio = null;
+        let currentPlanet = null;
+
+        function playPlanetSound(planetKey) {
+            const planetInfo = planetData[planetKey];
+            const currentPlanetEl = document.querySelector(`.planet-grid[data-planet="${planetKey}"] .planet`);
+
+            // If clicking the same planet that's currently playing
+            if (currentPlanet === planetKey) {
+                if (currentAudio && !currentAudio.paused) {
+                    // Stop the sound
+                    currentAudio.pause();
+                    currentAudio.currentTime = 0;
+                    currentPlanetEl.classList.remove('active');
+                    currentPlanet = null;
+                    currentAudio = null;
+                } else {
+                    // Resume the sound
+                    currentAudio.play();
+                    currentPlanetEl.classList.add('active');
+                    currentPlanet = planetKey;
+                }
+                    return;
+            }
+
+            // If clicking a different planet
+            // Stop previous audio if playing
+            if (currentAudio) {
+                currentAudio.pause();
+                currentAudio.currentTime = 0;
+            }
+
+            // Reset previous planet
+            if (currentPlanet) {
+                const prevPlanetEl = document.querySelector(`.planet-grid[data-planet="${currentPlanet}"] .planet`);
+                prevPlanetEl.classList.remove('active');
+            }
+
+            // Create and play new audio
+            currentAudio = new Audio(planetInfo.audioFile);
+            currentAudio.play();
+
+            // Activate current planet
+            currentPlanetEl.classList.add('active');
+            currentPlanet = planetKey;
+        }
+
+        // Add click event listeners to planets
+        document.querySelectorAll('.planet-grid').forEach(planetEl => {
+            planetEl.addEventListener('click', () => {
+                const planet = planetEl.dataset.planet;
+                playPlanetSound(planet);
+            });
+        });
+    </script>
+</body>
+</html>
