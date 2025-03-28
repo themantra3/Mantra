@@ -185,12 +185,13 @@
     
     .dropdown-content a {
       color: var(--gold);
-      padding: 12px 16px;
+      padding: 15px 20px;
       text-decoration: none;
       display: block;
       font-size: 16px;
       transition: all 0.3s ease;
       font-family: 'Cinzel', serif;
+      margin: 5px 0;
     }
     
     .dropdown-content a:hover {
@@ -218,6 +219,7 @@
       background: none;
       width: auto;
       height: auto;
+      margin-left: 5px;
     }
     
     .dropdown:hover > a::after {
@@ -509,72 +511,75 @@
       100% { box-shadow: 0 0 5px var(--gold); }
     }
 
-    /* Responsive */
+    /* Responsive Design Enhancements */
     @media (max-width: 1200px) {
       .container {
-        justify-content: flex-start; /* Align from left on smaller screens */
+        justify-content: center;
         padding: 20px;
+        gap: 15px;
+      }
+      
+      .box {
+        width: 200px;
+        height: 280px;
+        min-width: 200px;
+      }
+      
+      .navbar {
+        padding: 15px 30px;
+      }
+      
+      .logo {
+        font-size: 24px;
+      }
+      
+      .logo img {
+        height: 35px;
+      }
+      
+      .nav-links {
+        gap: 20px;
+      }
+      
+      .nav-links a {
+        font-size: 16px;
       }
     }
     
     @media (max-width: 768px) {
       .navbar {
-        padding: 15px 20px;
+        padding: 12px 20px;
       }
       
       .mobile-menu-btn {
         display: block;
+        z-index: 1001;
       }
       
       .nav-links {
         position: fixed;
-        top: 70px;
-        right: -300px;
-        width: 250px;
-        background: rgba(0, 0, 0, 0.9);
+        top: 0;
+        right: -100%;
+        width: 80%;
+        max-width: 300px;
+        height: 100vh;
+        background: rgba(0, 0, 0, 0.95);
         backdrop-filter: blur(10px);
         flex-direction: column;
-        padding: 20px;
-        gap: 15px;
-        border-radius: 0 0 0 10px;
-        border-left: 1px solid rgba(212, 175, 55, 0.3);
-        border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+        padding: 80px 20px 20px;
+        gap: 20px;
         transition: right 0.3s ease;
-        box-shadow: -5px 5px 15px rgba(0, 0, 0, 0.5);
+        box-shadow: -5px 0 15px rgba(0, 0, 0, 0.5);
+        z-index: 1000;
       }
       
       .nav-links.active {
         right: 0;
       }
       
-      .mood-title {
-        font-size: 30px;
-      }
-      
-      .mood-subtitle {
+      .nav-links a {
         font-size: 18px;
-        padding: 0 15px;
-      }
-      
-      .footer-content {
-        flex-direction: column;
-        gap: 10px;
-      }
-      
-      .footer-links, .social-icons {
-        margin: 5px 0;
-      }
-      
-      .footer-links a {
-        margin: 0 8px;
-        font-size: 14px;
-      }
-      
-      /* Ensure cards have appropriate size on mobile */
-      .box {
-        width: 200px;
-        height: 280px;
-        min-width: 200px;
+        padding: 10px 0;
       }
       
       .dropdown-content {
@@ -582,95 +587,293 @@
         background: transparent;
         box-shadow: none;
         padding-left: 20px;
-        display: none;
+        margin-top: 10px;
+        border: none;
       }
       
-      .dropdown.active .dropdown-content {
-        display: block;
+      .dropdown-content a {
+        padding: 12px 20px;
+        font-size: 16px;
       }
       
-      .dropdown > a::after {
-        margin-left: auto;
+      .main-content {
+        padding: 80px 15px 60px;
       }
-    }
-    
-    @media (max-width: 600px) {
+      
+      .mood-title {
+        font-size: 28px;
+        margin-bottom: 10px;
+      }
+      
+      .mood-subtitle {
+        font-size: 16px;
+        padding: 0 15px;
+      }
+      
       .container {
         padding: 10px;
+        gap: 10px;
       }
       
-      /* Make cards more visible on very small screens */
       .box {
         width: 180px;
         height: 260px;
         min-width: 180px;
       }
       
+      .box .mood-label {
+        font-size: 20px;
+        bottom: 15px;
+      }
+      
+      .box .icon {
+        font-size: 24px;
+        top: 10px;
+        right: 10px;
+      }
+      
       .back h3 {
         font-size: 20px;
+        margin-bottom: 10px;
       }
       
       .back p {
         font-size: 14px;
+        margin-bottom: 15px;
+        padding: 0 10px;
+      }
+      
+      .back .btn {
+        padding: 6px 15px;
+        font-size: 13px;
+      }
+      
+      .footer {
+        padding: 15px 10px;
+      }
+      
+      .footer-content {
+        flex-direction: column;
+        gap: 20px;
+      }
+      
+      .copyright {
+        font-size: 14px;
+      }
+      
+      .footer-links a {
+        padding: 8px 12px;
+        display: inline-block;
+      }
+      
+      .social-icons a {
+        padding: 8px;
+        display: inline-block;
       }
     }
-    /* Disclaimer Popup Styles - Golden Brown Theme */
-.disclaimer-popup {
-    display: none; /* Hidden by default */
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.9); /* Dark overlay */
-    justify-content: center;
-    align-items: center;
-    z-index: 2000; /* Ensure it's above everything */
-}
+    
+    @media (max-width: 480px) {
+      .container {
+        padding: 5px;
+        gap: 8px;
+      }
+      
+      .box {
+        width: 160px;
+        height: 240px;
+        min-width: 160px;
+      }
+      
+      .mood-title {
+        font-size: 24px;
+      }
+      
+      .mood-subtitle {
+        font-size: 14px;
+      }
+      
+      .box .mood-label {
+        font-size: 18px;
+      }
+      
+      .box .icon {
+        font-size: 20px;
+      }
+      
+      .back h3 {
+        font-size: 18px;
+      }
+      
+      .back p {
+        font-size: 13px;
+      }
+      
+      .back .btn {
+        padding: 5px 12px;
+        font-size: 12px;
+      }
+      
+      .logo {
+        font-size: 20px;
+      }
+      
+      .logo img {
+        height: 30px;
+      }
+      
+      .nav-links {
+        width: 100%;
+        max-width: none;
+      }
+    }
 
-.disclaimer-content {
-    background-color: #654321; /* Rich brown */
-    padding: 30px;
-    border-radius: 15px;
-    max-width: 400px;
-    text-align: center;
-    box-shadow: 0 0 20px rgba(212, 175, 55, 0.5); /* Gold shadow */
-    border: 2px solid var(--gold); /* Gold border */
-}
+    /* Add smooth scrolling for better mobile experience */
+    html {
+      scroll-behavior: smooth;
+      -webkit-overflow-scrolling: touch;
+    }
 
-.disclaimer-content h2 {
-    font-family: 'Cinzel', serif;
-    color: var(--gold); /* Gold text */
-    margin-bottom: 15px;
-    font-size: 24px;
-    text-shadow: 0 0 10px rgba(212, 175, 55, 0.5); /* Gold glow */
-}
+    /* Improve touch targets for mobile */
+    @media (hover: none) {
+      .nav-links a,
+      .dropdown-content a,
+      .back .btn {
+        padding: 12px 0;
+      }
+      
+      .box {
+        cursor: default;
+      }
+    }
 
-.disclaimer-content p {
-    font-family: 'Cormorant Garamond', serif;
-    color: rgba(255, 255, 255, 0.8); /* Light text */
-    font-size: 16px;
-    line-height: 1.6;
-    margin-bottom: 20px;
-}
+    /* Add loading animation for better perceived performance */
+    .flip-container {
+      animation: fadeInUp 0.5s ease-out forwards;
+      opacity: 0;
+    }
 
-.disclaimer-content button {
-    padding: 10px 20px;
-    background-color: var(--gold); /* Gold button */
-    color: #654321; /* Brown text */
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-family: 'Cinzel', serif;
-    font-size: 16px;
-    transition: all 0.3s ease;
-}
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
 
-.disclaimer-content button:hover {
-    background-color: var(--gold-dark); /* Darker gold on hover */
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(212, 175, 55, 0.5); /* Gold glow */
-}
+    /* Add touch feedback for mobile */
+    @media (hover: none) {
+      .nav-links a:active,
+      .dropdown-content a:active,
+      .back .btn:active {
+        opacity: 0.7;
+      }
+    }
+
+    /* Improve dropdown accessibility */
+    .dropdown-content {
+      visibility: hidden;
+      opacity: 0;
+      transition: visibility 0.3s, opacity 0.3s;
+    }
+
+    .dropdown:hover .dropdown-content {
+      visibility: visible;
+      opacity: 1;
+    }
+
+    @media (hover: none) {
+      .dropdown-content {
+        visibility: visible;
+        opacity: 1;
+      }
+    }
+
+    /* Add better focus states for accessibility */
+    a:focus,
+    button:focus {
+      outline: 2px solid var(--gold);
+      outline-offset: 2px;
+    }
+
+    /* Improve mobile menu button */
+    .mobile-menu-btn {
+      padding: 8px;
+      border-radius: 5px;
+      transition: background-color 0.3s;
+    }
+
+    .mobile-menu-btn:active {
+      background-color: rgba(212, 175, 55, 0.1);
+    }
+
+    /* Add better spacing for mobile menu */
+    @media (max-width: 768px) {
+      .nav-links a {
+        display: block;
+        padding: 12px 15px;
+        border-radius: 5px;
+        transition: background-color 0.3s;
+      }
+      
+      .nav-links a:active {
+        background-color: rgba(212, 175, 55, 0.1);
+      }
+      
+      .dropdown-content {
+        margin-top: 5px;
+      }
+      
+      .dropdown-content a {
+        padding: 10px 15px 10px 35px;
+      }
+    }
+
+    /* Improve container scrolling on mobile */
+    .container {
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+
+    .container::-webkit-scrollbar {
+      display: none;
+    }
+
+    /* Add better touch feedback for cards */
+    @media (hover: none) {
+      .flip-link:active .box {
+        transform: scale(0.98);
+      }
+    }
+
+    /* Improve mobile performance */
+    * {
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    /* Add better spacing for mobile disclaimer popup */
+    @media (max-width: 768px) {
+      .disclaimer-content {
+        margin: 20px;
+        padding: 20px;
+      }
+      
+      .disclaimer-content h2 {
+        font-size: 20px;
+      }
+      
+      .disclaimer-content p {
+        font-size: 14px;
+      }
+      
+      .disclaimer-content button {
+        padding: 8px 16px;
+        font-size: 14px;
+      }
+    }
   </style>
 </head>
 <body>
@@ -698,6 +901,7 @@
           <a href="oxygen.html"><i class="fas fa-wind"></i> Oxygen</a>
           <a href="heartrate.html"><i class="fas fa-heartbeat"></i> Heart Rate</a>
           <a href="sleep.html"><i class="fas fa-moon"></i> Sleep</a>
+          <a href="space.html"><i class="fas fa-space-shuttle"></i> Space</a>
         </div>
       </div>
     </div>
