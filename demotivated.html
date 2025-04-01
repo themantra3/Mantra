@@ -806,7 +806,7 @@
 
     <!-- Music Player -->
     <div class="player">
-        <h2 class="mood-title">Mood - Stress <button class="tips-btn" id="tips-trigger"><i class="fas fa-lightbulb"></i></button></h2>
+        <h2 class="mood-title">Mood - Demotivated <button class="tips-btn" id="tips-trigger"><i class="fas fa-lightbulb"></i></button></h2>
         <div class="cover-container" id="cover-container">
             <img src="cover1.jpg" id="cover" class="cover">
         </div>
@@ -866,35 +866,35 @@
     <div class="tips-overlay" id="tips-overlay">
         <div class="tips-popup" id="tips-popup">
             <div class="tips-header">
-                <h2 class="tips-title">Tips & Yoga for Stress Relief</h2>
+                <h2 class="tips-title">Tips & Yoga for Demotivation</h2>
                 <button class="close-tips" id="close-tips">&times;</button>
             </div>
             
             <div class="tips-section">
-                <h3 class="tips-section-title">Tips for Stress Relief</h3>
+                <h3 class="tips-section-title">Tips for Overcoming Demotivation</h3>
                 <ul class="tips-list">
-                    <li><i class="fas fa-check-circle"></i> Practice deep breathing exercises</li>
-                    <li><i class="fas fa-check-circle"></i> Take regular breaks and stretch</li>
-                    <li><i class="fas fa-check-circle"></i> Stay hydrated throughout the day</li>
-                    <li><i class="fas fa-check-circle"></i> Listen to calming music (like you're doing now!)</li>
-                    <li><i class="fas fa-check-circle"></i> Practice mindfulness meditation</li>
+                    <li><i class="fas fa-check-circle"></i> Break down your goals into smaller tasks</li>
+                    <li><i class="fas fa-check-circle"></i> Celebrate small achievements</li>
+                    <li><i class="fas fa-check-circle"></i> Surround yourself with positive people</li>
+                    <li><i class="fas fa-check-circle"></i> Practice self-care and mindfulness</li>
+                    <li><i class="fas fa-check-circle"></i> Listen to uplifting music (like you're doing now!)</li>
                 </ul>
             </div>
 
             <div class="tips-section">
                 <h3 class="tips-section-title">Recommended Yoga Poses</h3>
                 <div class="yoga-links">
-                    <a href="https://www.youtube.com/watch?v=7y4M4k6YMNU" target="_blank" class="yoga-link">
-                        <i class="fas fa-om"></i> Corpse Pose (Savasana) - Guided Meditation
+                    <a href="https://www.youtube.com/watch?v=5rT--p_cLOc" target="_blank" class="yoga-link">
+                        <i class="fas fa-om"></i> Warrior Pose (Virabhadrasana) - Builds Confidence
                     </a>
-                    <a href="https://www.yogajournal.com/poses/child-s-pose/" target="_blank" class="yoga-link">
-                        <i class="fas fa-om"></i> Child's Pose (Balasana) - Stress Relief
+                    <a href="https://www.youtube.com/watch?v=elBp2FpAOOI" target="_blank" class="yoga-link">
+                        <i class="fas fa-om"></i> Mountain Pose (Tadasana) - Grounding & Stability
                     </a>
-                    <a href="https://www.yogajournal.com/poses/cow-pose/" target="_blank" class="yoga-link">
-                        <i class="fas fa-om"></i> Cat-Cow Pose - Back Pain Relief
+                    <a href="https://www.youtube.com/watch?v=yVE4XXFFO70" target="_blank" class="yoga-link">
+                        <i class="fas fa-om"></i> Tree Pose (Vrksasana) - Balance & Focus
                     </a>
-                    <a href="https://www.youtube.com/watch?v=_OQEIiZLY-0&t=1s" target="_blank" class="yoga-link">
-                        <i class="fas fa-om"></i> Legs Up the Wall - Anxiety Relief
+                    <a href="https://www.youtube.com/watch?v=tSmKamkg3J4" target="_blank" class="yoga-link">
+                        <i class="fas fa-om"></i> Sun Salutation - Energy & Vitality
                     </a>
                 </div>
             </div>
@@ -922,11 +922,11 @@
         let isPlaying = false;
         
         const songs = [
-            { src: "songs/de 1.mp3", cover: "a1.jpg", title: "Stress 1", color: "#ff5733" },
-            { src: "songs/de 2.mp3", cover: "a2.jpg", title: "Stress 2", color: "#ffbd33" },
-            { src: "songs/de 3.mp3", cover: "a3.jpg", title: "Stress 3", color: "#33ff57" },
-            { src: "songs/de 4.mp3", cover: "a4.jpg", title: "Stress 4", color: "#3357ff" },
-            { src: "songs/de 5.mp3", cover: "a5.jpg", title: "Stress 5", color: "#a033ff" }
+            { src: "songs/dep 1.mp3", cover: "d1.webp", title: "Demotivate 1", color: "#ff5733" },
+            { src: "songs/dep 2.mp3", cover: "d2.webp", title: "Demotivate 2", color: "#ffbd33" },
+            { src: "songs/dep 3.mp3", cover: "d3.webp", title: "Demotivate 3", color: "#33ff57" },
+            { src: "songs/dep 4.mp3", cover: "d4.webp", title: "Demotivate 4", color: "#3357ff" },
+            { src: "songs/dep 5.mp3", cover: "d5.webp", title: "Demotivate 5", color: "#a033ff" }
         ];
         let songIndex = 0;
         
