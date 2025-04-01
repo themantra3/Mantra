@@ -135,6 +135,30 @@
             color: rgba(255, 255, 255, 0.8);
             text-transform: uppercase;
             font-weight: 500;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            position: relative;
+            padding-right: 40px;
+        }
+
+        .tips-btn {
+            background: none;
+            border: none;
+            color: rgba(255, 255, 255, 0.8);
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .tips-btn:hover {
+            color: #9D50BB;
+            transform: translateY(-50%) scale(1.1);
         }
 
         .cover-container {
@@ -405,6 +429,123 @@
             background-color: gold;
         }
 
+        /* Tips Popup Styles */
+        .tips-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .tips-popup {
+            background-color: #121212;
+            border-radius: 16px;
+            width: 90%;
+            max-width: 500px;
+            padding: 25px;
+            text-align: left;
+            border: 2px solid #282828;
+            transform: scale(0.7);
+            opacity: 0;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .tips-overlay.show {
+            display: flex;
+        }
+
+        .tips-popup.show {
+            transform: scale(1);
+            opacity: 1;
+        }
+
+        .tips-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .tips-title {
+            font-size: 24px;
+            color: #9D50BB;
+            margin: 0;
+        }
+
+        .close-tips {
+            background: none;
+            border: none;
+            color: #e0e0e0;
+            font-size: 24px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .close-tips:hover {
+            color: #9D50BB;
+        }
+
+        .tips-section {
+            margin-bottom: 25px;
+        }
+
+        .tips-section-title {
+            font-size: 18px;
+            color: #9D50BB;
+            margin-bottom: 15px;
+        }
+
+        .tips-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .tips-list li {
+            margin-bottom: 12px;
+            color: #e0e0e0;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+        }
+
+        .tips-list li i {
+            color: #9D50BB;
+            margin-top: 4px;
+        }
+
+        .yoga-links {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .yoga-link {
+            background: #282828;
+            padding: 15px;
+            border-radius: 8px;
+            text-decoration: none;
+            color: #e0e0e0;
+            transition: all 0.3s ease;
+        }
+
+        .yoga-link:hover {
+            background: #383838;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(157, 80, 187, 0.3);
+        }
+
+        .yoga-link i {
+            color: #9D50BB;
+            margin-right: 8px;
+        }
+
         /* Responsive Adjustments */
         @media (max-width: 768px) {
             .song-title {
@@ -422,6 +563,153 @@
                 width: 50px;
                 height: 50px;
                 font-size: 20px;
+            }
+
+            /* Tips Popup Mobile Styles */
+            .tips-popup {
+                width: 95%;
+                max-width: none;
+                padding: 20px;
+                margin: 15px;
+                max-height: 90vh;
+                overflow-y: auto;
+            }
+
+            .tips-title {
+                font-size: 20px;
+            }
+
+            .tips-section-title {
+                font-size: 16px;
+            }
+
+            .tips-list li {
+                font-size: 14px;
+                margin-bottom: 10px;
+            }
+
+            .yoga-links {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+
+            .yoga-link {
+                padding: 12px;
+                font-size: 14px;
+            }
+
+            /* Timer Popup Mobile Styles */
+            .timer-popup {
+                width: 95%;
+                max-width: none;
+                padding: 20px;
+                margin: 15px;
+            }
+
+            #timer-display {
+                font-size: 2.5rem;
+            }
+
+            .timer-input-container {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .timer-controls {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            /* Player Mobile Styles */
+            .player {
+                width: 95%;
+                padding: 15px;
+            }
+
+            .cover-container {
+                width: 150px;
+                height: 150px;
+            }
+
+            .controls {
+                gap: 10px;
+            }
+
+            /* Home Button Mobile Styles */
+            .home-btn {
+                width: 40px;
+                height: 40px;
+                font-size: 16px;
+            }
+
+            /* Timer Icon Mobile Styles */
+            .timer-icon {
+                width: 40px;
+                height: 40px;
+                bottom: 15px;
+                left: 15px;
+            }
+
+            .timer-icon svg {
+                width: 24px;
+                height: 24px;
+            }
+        }
+
+        /* Additional Mobile Optimizations */
+        @media (max-width: 480px) {
+            .tips-popup {
+                padding: 15px;
+            }
+
+            .tips-title {
+                font-size: 18px;
+            }
+
+            .tips-section-title {
+                font-size: 15px;
+            }
+
+            .tips-list li {
+                font-size: 13px;
+            }
+
+            .yoga-link {
+                padding: 10px;
+                font-size: 13px;
+            }
+
+            .player {
+                padding: 12px;
+            }
+
+            .cover-container {
+                width: 130px;
+                height: 130px;
+            }
+
+            .song-title {
+                font-size: 20px;
+            }
+
+            .time-container {
+                font-size: 11px;
+            }
+
+            .progress {
+                height: 6px;
+            }
+
+            .btn {
+                width: 35px;
+                height: 35px;
+                font-size: 14px;
+            }
+
+            #play {
+                width: 45px;
+                height: 45px;
+                font-size: 18px;
             }
         }
     </style>
@@ -443,7 +731,7 @@
 
     <!-- Music Player -->
     <div class="player">
-        <h2 class="mood-title">Mood - Happy</h2>
+        <h2 class="mood-title">Mood - Happy <button class="tips-btn" id="tips-trigger"><i class="fas fa-lightbulb"></i></button></h2>
         <div class="cover-container" id="cover-container">
             <img src="cover1.jpg" id="cover" class="cover">
         </div>
@@ -495,6 +783,45 @@
             <div class="timer-controls">
                 <button id="cancel-btn" class="timer-btn timer-btn-cancel">Cancel</button>
                 <button id="start-btn" class="timer-btn timer-btn-start">Start</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tips Overlay -->
+    <div class="tips-overlay" id="tips-overlay">
+        <div class="tips-popup" id="tips-popup">
+            <div class="tips-header">
+                <h2 class="tips-title">Tips & Yoga for Happiness</h2>
+                <button class="close-tips" id="close-tips">&times;</button>
+            </div>
+            
+            <div class="tips-section">
+                <h3 class="tips-section-title">Tips for Happy Mood</h3>
+                <ul class="tips-list">
+                    <li><i class="fas fa-check-circle"></i> Practice gratitude daily by writing down 3 things you're thankful for</li>
+                    <li><i class="fas fa-check-circle"></i> Surround yourself with positive people who uplift your spirits</li>
+                    <li><i class="fas fa-check-circle"></i> Engage in regular physical exercise to boost endorphins</li>
+                    <li><i class="fas fa-check-circle"></i> Listen to uplifting music (like you're doing now!)</li>
+                    <li><i class="fas fa-check-circle"></i> Take regular breaks to practice deep breathing</li>
+                </ul>
+            </div>
+
+            <div class="tips-section">
+                <h3 class="tips-section-title">Recommended Yoga Poses</h3>
+                <div class="yoga-links">
+                    <a href="https://www.youtube.com/shorts/J29Lpbigzhg" target="_blank" class="yoga-link">
+                        <i class="fas fa-om"></i> Camel Pose (Ustrasana)
+                    </a>
+                    <a href="https://www.youtube.com/watch?v=XUcAuYd7VU0" target="_blank" class="yoga-link">
+                        <i class="fas fa-om"></i> Bridge Pose (Setu Bandha Sarvangasana)
+                    </a>
+                    <a href="https://www.youtube.com/watch?v=bclyJteWXic" target="_blank" class="yoga-link">
+                        <i class="fas fa-om"></i> Warrior I Pose (Virabhadrasana I)
+                    </a>
+                    <a href="https://www.youtube.com/watch?v=yVE4XXFFO70" target="_blank" class="yoga-link">
+                        <i class="fas fa-om"></i> Tree Pose (Vrksasana)
+                    </a>
+                </div>
             </div>
         </div>
     </div>
@@ -820,6 +1147,37 @@
         timerOverlay.addEventListener('click', (e) => {
             if (e.target === timerOverlay) {
                 hideTimerPopup();
+            }
+        });
+
+        // Tips Popup Script
+        const tipsTrigger = document.getElementById('tips-trigger');
+        const tipsPopup = document.getElementById('tips-popup');
+        const tipsOverlay = document.getElementById('tips-overlay');
+        const closeTips = document.getElementById('close-tips');
+
+        // Show tips popup
+        function showTipsPopup() {
+            tipsOverlay.classList.add('show');
+            setTimeout(() => {
+                tipsPopup.classList.add('show');
+            }, 50);
+        }
+
+        // Hide tips popup
+        function hideTipsPopup() {
+            tipsPopup.classList.remove('show');
+            setTimeout(() => {
+                tipsOverlay.classList.remove('show');
+            }, 300);
+        }
+
+        // Event Listeners for Tips
+        tipsTrigger.addEventListener('click', showTipsPopup);
+        closeTips.addEventListener('click', hideTipsPopup);
+        tipsOverlay.addEventListener('click', (e) => {
+            if (e.target === tipsOverlay) {
+                hideTipsPopup();
             }
         });
     </script>
