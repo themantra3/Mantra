@@ -9,709 +9,969 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/particlesjs/2.2.3/particles.min.js"></script>
     <style>
         /* General Styles */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            font-family: 'Poppins', sans-serif;
-            position: relative;
-            color: white;
-            overflow: hidden;
-            background: #000;
-        }
-
-        /* Om Background */
-        .om-background {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -2;
-            background: linear-gradient(135deg, #391865, #21104a);
-            overflow: hidden;
-        }
-
-        .om-symbol {
-            position: absolute;
-            width: 120px;
-            height: 120px;
-            opacity: 0.1;
-            transform: rotate(0deg);
-            transition: transform 20s linear, opacity 2s ease;
-            filter: drop-shadow(0 0 10px rgba(157, 80, 187, 0.5));
-            animation: float 15s infinite ease-in-out;
-        }
-
-        @keyframes float {
-            0% { transform: translateY(0) rotate(0deg); }
-            50% { transform: translateY(-20px) rotate(180deg); }
-            100% { transform: translateY(0) rotate(360deg); }
-        }
-
-        /* Dark Overlay */
-        .overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.3);
-            z-index: -1;
-            pointer-events: none;
-        }
-
-        /* Particles Container */
-        #particles-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-        }
-
-        /* Home Button */
-        .home-btn {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(5px);
-            cursor: pointer;
-            font-size: 20px;
-            text-align: center;
-            color: white;
-            transition: all 0.3s ease;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 10;
-        }
-
-        .home-btn:hover {
-            background: rgba(255, 255, 255, 0.2);
-            transform: scale(1.05);
-            box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
-        }
-
-        /* Music Player */
-        .player {
-            width: 90%;
-            max-width: 380px;
-            padding: 20px;
-            border-radius: 24px;
-            background: rgba(0, 0, 0, 0.5);
-            text-align: center;
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 
-                        0 0 30px rgba(157, 80, 187, 0.3);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            z-index: 5;
-        }
-
-        .player:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5), 
-                        0 0 40px rgba(157, 80, 187, 0.4);
-        }
-
-        .mood-title {
-            font-size: 18px;
-            margin-bottom: 15px;
-            letter-spacing: 1px;
-            color: rgba(255, 255, 255, 0.8);
-            text-transform: uppercase;
-            font-weight: 500;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 15px;
-            position: relative;
-            padding-right: 40px;
-        }
-
-        .tips-btn {
-            background: none;
-            border: none;
-            color: rgba(255, 255, 255, 0.8);
-            cursor: pointer;
-            font-size: 16px;
-            transition: all 0.3s ease;
-            position: absolute;
-            right: 0;
-            top: 50%;
-            transform: translateY(-50%);
-        }
-
-        .tips-btn:hover {
-            color: #9D50BB;
-            transform: translateY(-50%) scale(1.1);
-        }
-
-        .cover-container {
-            position: relative;
-            width: 180px;
-            height: 180px;
-            margin: 0 auto 25px;
-            border-radius: 50%;
-            overflow: hidden;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4),
-                        0 0 15px rgba(157, 80, 187, 0.6);
-            animation: pulse 2s infinite ease-in-out;
-        }
-
-        @keyframes pulse {
-            0% { transform: scale(1); box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4), 0 0 15px rgba(157, 80, 187, 0.6); }
-            50% { transform: scale(1.03); box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4), 0 0 20px rgba(157, 80, 187, 0.8); }
-            100% { transform: scale(1); box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4), 0 0 15px rgba(157, 80, 187, 0.6); }
-        }
-
-        .cover {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.5s ease;
-        }
-
-        .playing .cover {
-            animation: rotate 20s linear infinite;
-        }
-
-        @keyframes rotate {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-
-        .song-title {
-            font-size: 26px;
-            margin: 5px 0 20px;
-            font-weight: 600;
-            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
-        }
-
-        .time-container {
-            display: flex;
-            justify-content: space-between;
-            font-size: 12px;
-            margin-bottom: 5px;
-            color: rgba(255, 255, 255, 0.7);
-        }
-
-        .progress {
-            width: 100%;
-            height: 8px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
-            margin-bottom: 25px;
-            overflow: hidden;
-            position: relative;
-            cursor: pointer;
-        }
-
-        .progress-bar {
-            width: 0%;
-            height: 100%;
-            background: linear-gradient(90deg, #9D50BB, #6E48AA);
-            position: relative;
-            border-radius: 10px;
-            transition: width 0.1s linear;
-            box-shadow: 0 0 10px rgba(157, 80, 187, 0.5);
-        }
-
-        .progress-dot {
-            width: 12px;
-            height: 12px;
-            background: white;
-            border-radius: 50%;
-            position: absolute;
-            top: 50%;
-            right: -6px;
-            transform: translateY(-50%);
-            box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3);
-            display: none;
-        }
-
-        .progress:hover .progress-dot {
-            display: block;
-        }
-
-        .controls {
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            margin-top: 10px;
-        }
-
-        .btn {
-            width: 48px;
-            height: 48px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            cursor: pointer;
-            outline: none;
-            font-size: 18px;
-            color: white;
-            transition: all 0.3s ease;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .btn:hover {
-            transform: scale(1.1);
-            background: rgba(255, 255, 255, 0.2);
-            box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
-        }
-
-        #play {
-            width: 60px;
-            height: 60px;
-            font-size: 22px;
-            background: linear-gradient(135deg, #9D50BB, #6E48AA);
-            border: none;
-        }
-
-        #play:hover {
-            box-shadow: 0 0 20px rgba(157, 80, 187, 0.7);
-        }
-
-        /* Timer Icon */
-        .timer-icon {
-            cursor: pointer;
-            position: fixed;
-            bottom: 20px;
-            left: 20px;
-            width: 48px;
-            height: 48px;
-            background-color: #121212;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            transition: all 0.3s ease;
-            border: 2px solid #282828;
-            z-index: 1000;
-        }
-
-        .timer-icon:hover {
-            transform: scale(1.1);
-            box-shadow: 0 0 10px rgba(29, 185, 84, 0.5);
-        }
-
-        .timer-icon svg {
-            width: 28px;
-            height: 28px;
-            fill: #e0e0e0;
-        }
-
-        /* Timer Overlay */
-        .timer-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.7);
-            display: none;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-        }
-
-        .timer-popup {
-            background-color: #121212;
-            border-radius: 16px;
-            width: 90%;
-            max-width: 350px;
-            padding: 20px;
-            text-align: center;
-            border: 2px solid #282828;
-            transform: scale(0.7);
-            opacity: 0;
-            transition: all 0.3s ease;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-        }
-
-        .timer-overlay.show {
-            display: flex;
-        }
-
-        .timer-popup.show {
-            transform: scale(1);
-            opacity: 1;
-        }
-
-        #timer-display {
-            font-size: 3rem;
-            font-weight: bold;
-            color: gold;
-            margin-bottom: 20px;
-        }
-
-        .timer-input-container {
-            display: flex;
-            justify-content: space-between;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-
-        .timer-input-wrapper {
-            display: flex;
-            align-items: center;
-            background-color: #282828;
-            border-radius: 8px;
-            flex-grow: 1;
-            overflow: hidden;
-        }
-
-        .timer-input-wrapper input {
-            flex-grow: 1;
-            background: none;
-            border: none;
-            color: #e0e0e0;
-            padding: 12px 15px;
-            font-size: 1rem;
-            text-align: center;
-            width: 100%;
-        }
-
-        .timer-input-wrapper span {
-            padding: 12px 15px;
-            background-color: #383838;
-            color: #e0e0e0;
-        }
-
-        .timer-controls {
-            display: flex;
-            justify-content: space-between;
-            gap: 15px;
-        }
-
-        .timer-btn {
-            flex-grow: 1;
-            padding: 12px 15px;
-            border: none;
-            border-radius: 8px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .timer-btn-start {
-            background-color: gold;
-            color: #121212;
-        }
-
-        .timer-btn-start:hover {
-            background-color: gold;
-        }
-
-        .timer-btn-cancel {
-            background-color: gold;
-            color: black;
-        }
-
-        .timer-btn-cancel:hover {
-            background-color: gold;
-        }
-
-        /* Tips Popup Styles */
-        .tips-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.7);
-            display: none;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-        }
-
-        .tips-popup {
-            background-color: #121212;
-            border-radius: 16px;
-            width: 90%;
-            max-width: 500px;
-            padding: 25px;
-            text-align: left;
-            border: 2px solid #282828;
-            transform: scale(0.7);
-            opacity: 0;
-            transition: all 0.3s ease;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-        }
-
-        .tips-overlay.show {
-            display: flex;
-        }
-
-        .tips-popup.show {
-            transform: scale(1);
-            opacity: 1;
-        }
-
-        .tips-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-
-        .tips-title {
-            font-size: 24px;
-            color: #9D50BB;
-            margin: 0;
-        }
-
-        .close-tips {
-            background: none;
-            border: none;
-            color: #e0e0e0;
-            font-size: 24px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .close-tips:hover {
-            color: #9D50BB;
-        }
-
-        .tips-section {
-            margin-bottom: 25px;
-        }
-
-        .tips-section-title {
-            font-size: 18px;
-            color: #9D50BB;
-            margin-bottom: 15px;
-        }
-
-        .tips-list {
-            list-style: none;
-            padding: 0;
-        }
-
-        .tips-list li {
-            margin-bottom: 12px;
-            color: #e0e0e0;
-            display: flex;
-            align-items: flex-start;
-            gap: 10px;
-        }
-
-        .tips-list li i {
-            color: #9D50BB;
-            margin-top: 4px;
-        }
-
-        .yoga-links {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
-        }
-
-        .yoga-link {
-            background: #282828;
-            padding: 15px;
-            border-radius: 8px;
-            text-decoration: none;
-            color: #e0e0e0;
-            transition: all 0.3s ease;
-        }
-
-        .yoga-link:hover {
-            background: #383838;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(157, 80, 187, 0.3);
-        }
-
-        .yoga-link i {
-            color: #9D50BB;
-            margin-right: 8px;
-        }
-
-        /* Responsive Adjustments */
-        @media (max-width: 768px) {
-            .song-title {
-                font-size: 22px;
-            }
-            .mood-title {
-                font-size: 16px;
-            }
-            .btn {
-                width: 40px;
-                height: 40px;
-                font-size: 16px;
-            }
-            #play {
-                width: 50px;
-                height: 50px;
-                font-size: 20px;
-            }
-
-            /* Tips Popup Mobile Styles */
-            .tips-popup {
-                width: 95%;
-                max-width: none;
-                padding: 20px;
-                margin: 15px;
-                max-height: 90vh;
-                overflow-y: auto;
-            }
-
-            .tips-title {
-                font-size: 20px;
-            }
-
-            .tips-section-title {
-                font-size: 16px;
-            }
-
-            .tips-list li {
-                font-size: 14px;
-                margin-bottom: 10px;
-            }
-
-            .yoga-links {
-                grid-template-columns: 1fr;
-                gap: 10px;
-            }
-
-            .yoga-link {
-                padding: 12px;
-                font-size: 14px;
-            }
-
-            /* Timer Popup Mobile Styles */
-            .timer-popup {
-                width: 95%;
-                max-width: none;
-                padding: 20px;
-                margin: 15px;
-            }
-
-            #timer-display {
-                font-size: 2.5rem;
-            }
-
-            .timer-input-container {
-                flex-direction: column;
-                gap: 10px;
-            }
-
-            .timer-controls {
-                flex-direction: column;
-                gap: 10px;
-            }
-
-            /* Player Mobile Styles */
-            .player {
-                width: 95%;
-                padding: 15px;
-            }
-
-            .cover-container {
-                width: 150px;
-                height: 150px;
-            }
-
-            .controls {
-                gap: 10px;
-            }
-
-            /* Home Button Mobile Styles */
-            .home-btn {
-                width: 40px;
-                height: 40px;
-                font-size: 16px;
-            }
-
-            /* Timer Icon Mobile Styles */
-            .timer-icon {
-                width: 40px;
-                height: 40px;
-                bottom: 15px;
-                left: 15px;
-            }
-
-            .timer-icon svg {
-                width: 24px;
-                height: 24px;
-            }
-        }
-
-        /* Additional Mobile Optimizations */
-        @media (max-width: 480px) {
-            .tips-popup {
-                padding: 15px;
-            }
-
-            .tips-title {
-                font-size: 18px;
-            }
-
-            .tips-section-title {
-                font-size: 15px;
-            }
-
-            .tips-list li {
-                font-size: 13px;
-            }
-
-            .yoga-link {
-                padding: 10px;
-                font-size: 13px;
-            }
-
-            .player {
-                padding: 12px;
-            }
-
-            .cover-container {
-                width: 130px;
-                height: 130px;
-            }
-
-            .song-title {
-                font-size: 20px;
-            }
-
-            .time-container {
-                font-size: 11px;
-            }
-
-            .progress {
-                height: 6px;
-            }
-
-            .btn {
-                width: 35px;
-                height: 35px;
-                font-size: 14px;
-            }
-
-            #play {
-                width: 45px;
-                height: 45px;
-                font-size: 18px;
-            }
-        }
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    height: 100%;
+    font-family: 'Poppins', sans-serif;
+    position: relative;
+    color: white;
+    overflow-x: hidden;
+    background: #000;
+}
+
+/* Om Background */
+.om-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -2;
+    background: linear-gradient(135deg, #391865, #21104a);
+    overflow: hidden;
+}
+
+.om-symbol {
+    position: absolute;
+    width: 120px;
+    height: 120px;
+    opacity: 0.1;
+    transform: rotate(0deg);
+    transition: transform 20s linear, opacity 2s ease;
+    filter: drop-shadow(0 0 10px rgba(157, 80, 187, 0.5));
+    animation: float 15s infinite ease-in-out;
+}
+
+@keyframes float {
+    0% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-20px) rotate(180deg); }
+    100% { transform: translateY(0) rotate(360deg); }
+}
+
+/* Dark Overlay */
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.3);
+    z-index: -1;
+    pointer-events: none;
+}
+
+/* Particles Container */
+#particles-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+}
+
+/* Home Button */
+.home-btn {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(5px);
+    cursor: pointer;
+    font-size: 20px;
+    text-align: center;
+    color: white;
+    transition: all 0.3s ease;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+}
+
+.home-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: scale(1.05);
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+}
+
+/* Music Player */
+.player {
+    width: 90%;
+    max-width: 380px;
+    padding: 20px;
+    border-radius: 24px;
+    background: rgba(0, 0, 0, 0.5);
+    text-align: center;
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 
+                0 0 30px rgba(157, 80, 187, 0.3);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    z-index: 5;
+    margin: 20px 0;
+}
+
+.player:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5), 
+                0 0 40px rgba(157, 80, 187, 0.4);
+}
+
+.mood-title {
+    font-size: 18px;
+    margin-bottom: 15px;
+    letter-spacing: 1px;
+    color: rgba(255, 255, 255, 0.8);
+    text-transform: uppercase;
+    font-weight: 500;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    position: relative;
+    padding-right: 40px;
+}
+
+.tips-btn {
+    background: none;
+    border: none;
+    color: rgba(255, 255, 255, 0.8);
+    cursor: pointer;
+    font-size: 16px;
+    transition: all 0.3s ease;
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.tips-btn:hover {
+    color: #9D50BB;
+    transform: translateY(-50%) scale(1.1);
+}
+
+.cover-container {
+    position: relative;
+    width: 180px;
+    height: 180px;
+    margin: 0 auto 25px;
+    border-radius: 50%;
+    overflow: hidden;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4),
+                0 0 15px rgba(157, 80, 187, 0.6);
+    animation: pulse 2s infinite ease-in-out;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4), 0 0 15px rgba(157, 80, 187, 0.6); }
+    50% { transform: scale(1.03); box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4), 0 0 20px rgba(157, 80, 187, 0.8); }
+    100% { transform: scale(1); box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4), 0 0 15px rgba(157, 80, 187, 0.6); }
+}
+
+.cover {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.playing .cover {
+    animation: rotate 20s linear infinite;
+}
+
+@keyframes rotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+.song-title {
+    font-size: 26px;
+    margin: 5px 0 20px;
+    font-weight: 600;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+}
+
+.time-container {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    margin-bottom: 5px;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.progress {
+    width: 100%;
+    height: 8px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    margin-bottom: 25px;
+    overflow: hidden;
+    position: relative;
+    cursor: pointer;
+}
+
+.progress-bar {
+    width: 0%;
+    height: 100%;
+    background: linear-gradient(90deg, #9D50BB, #6E48AA);
+    position: relative;
+    border-radius: 10px;
+    transition: width 0.1s linear;
+    box-shadow: 0 0 10px rgba(157, 80, 187, 0.5);
+}
+
+.progress-dot {
+    width: 12px;
+    height: 12px;
+    background: white;
+    border-radius: 50%;
+    position: absolute;
+    top: 50%;
+    right: -6px;
+    transform: translateY(-50%);
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3);
+    display: none;
+}
+
+.progress:hover .progress-dot {
+    display: block;
+}
+
+.controls {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.btn {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    cursor: pointer;
+    outline: none;
+    font-size: 18px;
+    color: white;
+    transition: all 0.3s ease;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.btn:hover {
+    transform: scale(1.1);
+    background: rgba(255, 255, 255, 0.2);
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+}
+
+#play {
+    width: 60px;
+    height: 60px;
+    font-size: 22px;
+    background: linear-gradient(135deg, #9D50BB, #6E48AA);
+    border: none;
+}
+
+#play:hover {
+    box-shadow: 0 0 20px rgba(157, 80, 187, 0.7);
+}
+
+/* Timer Icon */
+.timer-icon {
+    cursor: pointer;
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    width: 48px;
+    height: 48px;
+    background-color: #121212;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.3s ease;
+    border: 2px solid #282828;
+    z-index: 1000;
+}
+
+.timer-icon:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 10px rgba(29, 185, 84, 0.5);
+}
+
+.timer-icon svg {
+    width: 28px;
+    height: 28px;
+    fill: #e0e0e0;
+}
+
+/* Timer Overlay */
+.timer-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.timer-popup {
+    background-color: #121212;
+    border-radius: 16px;
+    width: 90%;
+    max-width: 350px;
+    padding: 20px;
+    text-align: center;
+    border: 2px solid #282828;
+    transform: scale(0.7);
+    opacity: 0;
+    transition: all 0.3s ease;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+.timer-overlay.show {
+    display: flex;
+}
+
+.timer-popup.show {
+    transform: scale(1);
+    opacity: 1;
+}
+
+#timer-display {
+    font-size: 3rem;
+    font-weight: bold;
+    color: gold;
+    margin-bottom: 20px;
+}
+
+.timer-input-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.timer-input-wrapper {
+    display: flex;
+    align-items: center;
+    background-color: #282828;
+    border-radius: 8px;
+    flex-grow: 1;
+    overflow: hidden;
+}
+
+.timer-input-wrapper input {
+    flex-grow: 1;
+    background: none;
+    border: none;
+    color: #e0e0e0;
+    padding: 12px 15px;
+    font-size: 1rem;
+    text-align: center;
+    width: 100%;
+}
+
+.timer-input-wrapper span {
+    padding: 12px 15px;
+    background-color: #383838;
+    color: #e0e0e0;
+}
+
+.timer-controls {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+}
+
+.timer-btn {
+    flex-grow: 1;
+    padding: 12px 15px;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.timer-btn-start {
+    background-color: gold;
+    color: #121212;
+}
+
+.timer-btn-start:hover {
+    background-color: gold;
+}
+
+.timer-btn-cancel {
+    background-color: gold;
+    color: black;
+}
+
+.timer-btn-cancel:hover {
+    background-color: gold;
+}
+
+/* Tips Popup Styles */
+.tips-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.tips-popup {
+    background-color: #121212;
+    border-radius: 16px;
+    width: 90%;
+    max-width: 500px;
+    padding: 25px;
+    text-align: left;
+    border: 2px solid #282828;
+    transform: scale(0.7);
+    opacity: 0;
+    transition: all 0.3s ease;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.tips-overlay.show {
+    display: flex;
+}
+
+.tips-popup.show {
+    transform: scale(1);
+    opacity: 1;
+}
+
+.tips-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    top: 0;
+    background-color: #121212;
+    padding: 5px 0;
+    z-index: 10;
+}
+
+.tips-title {
+    font-size: 24px;
+    color: #9D50BB;
+    margin: 0;
+}
+
+.close-tips {
+    background: none;
+    border: none;
+    color: #e0e0e0;
+    font-size: 24px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.close-tips:hover {
+    color: #9D50BB;
+}
+
+.tips-section {
+    margin-bottom: 25px;
+}
+
+.tips-section-title {
+    font-size: 18px;
+    color: #9D50BB;
+    margin-bottom: 15px;
+}
+
+.tips-list {
+    list-style: none;
+    padding: 0;
+}
+
+.tips-list li {
+    margin-bottom: 12px;
+    color: #e0e0e0;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+}
+
+.tips-list li i {
+    color: #9D50BB;
+    margin-top: 4px;
+}
+
+.yoga-links {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+}
+
+.yoga-link {
+    background: #282828;
+    padding: 15px;
+    border-radius: 8px;
+    text-decoration: none;
+    color: #e0e0e0;
+    transition: all 0.3s ease;
+}
+
+.yoga-link:hover {
+    background: #383838;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(157, 80, 187, 0.3);
+}
+
+.yoga-link i {
+    color: #9D50BB;
+    margin-right: 8px;
+}
+
+/* Mudra Section Styles */
+.mudra-section {
+    margin-top: 25px;
+    border-top: 1px solid rgba(157, 80, 187, 0.3);
+    padding-top: 20px;
+}
+
+.mudra-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 15px;
+    margin-top: 15px;
+}
+
+.mudra-card {
+    background: rgba(157, 80, 187, 0.1);
+    border-radius: 10px;
+    padding: 15px;
+    text-align: center;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(157, 80, 187, 0.3);
+}
+
+.mudra-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(157, 80, 187, 0.3);
+    background: rgba(157, 80, 187, 0.2);
+}
+
+.mudra-icon {
+    font-size: 36px;
+    margin-bottom: 10px;
+    color: #9D50BB;
+}
+
+.mudra-name {
+    font-weight: 500;
+    margin-bottom: 5px;
+    color: white;
+}
+
+.mudra-benefit {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+/* Desktop and Tablet Breakpoint */
+@media (min-width: 769px) and (max-width: 1366px) {
+    .tips-popup {
+        width: 85%;
+        max-width: 600px;
+        padding: 30px;
+    }
+
+    .tips-title {
+        font-size: 26px;
+    }
+
+    .tips-section-title {
+        font-size: 20px;
+    }
+
+    .tips-list li {
+        font-size: 16px;
+    }
+
+    .yoga-links {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+    }
+
+    .yoga-link {
+        font-size: 16px;
+        padding: 18px;
+    }
+
+    .mudra-container {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+    }
+
+    .mudra-card {
+        padding: 18px;
+    }
+
+    .mudra-icon {
+        font-size: 36px;
+    }
+
+    .player {
+        width: 90%;
+        max-width: 380px;
+        padding: 20px;
+    }
+
+    .cover-container {
+        width: 180px;
+        height: 180px;
+    }
+
+    .song-title {
+        font-size: 26px;
+    }
+
+    .btn {
+        width: 50px;
+        height: 50px;
+        font-size: 18px;
+    }
+
+    #play {
+        width: 60px;
+        height: 60px;
+        font-size: 24px;
+    }
+}
+
+/* Tablet Breakpoint */
+@media (min-width: 481px) and (max-width: 768px) {
+    .song-title {
+        font-size: 22px;
+    }
+    
+    .mood-title {
+        font-size: 16px;
+    }
+    
+    .btn {
+        width: 40px;
+        height: 40px;
+        font-size: 16px;
+    }
+    
+    #play {
+        width: 50px;
+        height: 50px;
+        font-size: 20px;
+    }
+
+    /* Tips Popup Tablet Styles */
+    .tips-popup {
+        width: 90%;
+        max-width: 500px;
+        padding: 20px;
+        max-height: 85vh;
+    }
+
+    .tips-title {
+        font-size: 22px;
+    }
+
+    .tips-section-title {
+        font-size: 18px;
+    }
+
+    .tips-list li {
+        font-size: 15px;
+    }
+
+    .yoga-links {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+    }
+
+    .yoga-link {
+        padding: 14px;
+        font-size: 15px;
+    }
+
+    .mudra-container {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+    }
+    
+    .mudra-card {
+        padding: 12px;
+    }
+    
+    .mudra-icon {
+        font-size: 32px;
+    }
+
+    /* Timer Popup Tablet Styles */
+    .timer-popup {
+        width: 90%;
+        max-width: 400px;
+    }
+
+    /* Player Tablet Styles */
+    .player {
+        width: 90%;
+        max-width: 350px;
+        padding: 18px;
+    }
+
+    .cover-container {
+        width: 160px;
+        height: 160px;
+        margin-bottom: 20px;
+    }
+
+    /* Home Button Tablet Styles */
+    .home-btn {
+        width: 45px;
+        height: 45px;
+        font-size: 18px;
+    }
+
+    /* Timer Icon Tablet Styles */
+    .timer-icon {
+        width: 45px;
+        height: 45px;
+    }
+
+    .timer-icon svg {
+        width: 26px;
+        height: 26px;
+    }
+}
+
+/* Mobile Breakpoint */
+@media (max-width: 480px) {
+    body {
+        padding: 15px 0;
+    }
+    
+    .tips-popup {
+        padding: 15px;
+        width: 95%;
+        margin: 10px;
+        max-height: 85vh;
+    }
+
+    .tips-title {
+        font-size: 18px;
+    }
+
+    .tips-section-title {
+        font-size: 15px;
+    }
+
+    .tips-list li {
+        font-size: 13px;
+        gap: 8px;
+    }
+
+    .yoga-links {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+
+    .yoga-link {
+        padding: 10px;
+        font-size: 13px;
+    }
+    
+    .mudra-container {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+    
+    .mudra-card {
+        padding: 10px;
+    }
+    
+    .mudra-icon {
+        font-size: 28px;
+    }
+
+    .player {
+        padding: 12px;
+        width: 95%;
+        margin: 15px 0;
+    }
+
+    .cover-container {
+        width: 130px;
+        height: 130px;
+        margin-bottom: 15px;
+    }
+
+    .song-title {
+        font-size: 20px;
+        margin-bottom: 15px;
+    }
+
+    .time-container {
+        font-size: 11px;
+    }
+
+    .progress {
+        height: 6px;
+        margin-bottom: 20px;
+    }
+    
+    .controls {
+        gap: 8px;
+    }
+
+    .btn {
+        width: 35px;
+        height: 35px;
+        font-size: 14px;
+    }
+
+    #play {
+        width: 45px;
+        height: 45px;
+        font-size: 18px;
+    }
+    
+    .home-btn {
+        width: 38px;
+        height: 38px;
+        font-size: 16px;
+        top: 15px;
+        left: 15px;
+    }
+    
+    .timer-icon {
+        width: 38px;
+        height: 38px;
+        bottom: 15px;
+        left: 15px;
+    }
+    
+    .timer-icon svg {
+        width: 22px;
+        height: 22px;
+    }
+    
+    .timer-popup {
+        width: 95%;
+        padding: 15px;
+    }
+    
+    #timer-display {
+        font-size: 2.2rem;
+        margin-bottom: 15px;
+    }
+    
+    .timer-input-container {
+        flex-direction: column;
+        gap: 8px;
+    }
+    
+    .timer-controls {
+        flex-direction: column;
+        gap: 8px;
+    }
+    
+    .timer-btn {
+        padding: 10px;
+        font-size: 0.9rem;
+    }
+    
+    .timer-input-wrapper input {
+        padding: 10px;
+        font-size: 0.9rem;
+    }
+    
+    .timer-input-wrapper span {
+        padding: 10px;
+    }
+}
+
+/* Very small mobile devices */
+@media (max-width: 320px) {
+    .cover-container {
+        width: 110px;
+        height: 110px;
+    }
+    
+    .song-title {
+        font-size: 18px;
+    }
+    
+    .btn {
+        width: 32px;
+        height: 32px;
+        font-size: 12px;
+    }
+    
+    #play {
+        width: 40px;
+        height: 40px;
+        font-size: 16px;
+    }
+    
+    .home-btn, .timer-icon {
+        width: 35px;
+        height: 35px;
+        font-size: 14px;
+    }
+}
+
+/* Fix for Safari on iPhone */
+@supports (-webkit-touch-callout: none) {
+    body {
+        min-height: -webkit-fill-available;
+    }
+    
+    .tips-popup, .timer-popup {
+        max-height: 80vh;
+    }
+}
+
+/* Support for high-resolution displays */
+@media only screen and (-webkit-min-device-pixel-ratio: 2),
+       only screen and (min--moz-device-pixel-ratio: 2),
+       only screen and (-o-min-device-pixel-ratio: 2/1),
+       only screen and (min-device-pixel-ratio: 2),
+       only screen and (min-resolution: 192dpi),
+       only screen and (min-resolution: 2dppx) {
+    .cover {
+        image-rendering: -webkit-optimize-contrast;
+    }
+}
     </style>
 </head>
 <body>
@@ -787,7 +1047,6 @@
         </div>
     </div>
 
-    <!-- Tips Overlay -->
     <div class="tips-overlay" id="tips-overlay">
         <div class="tips-popup" id="tips-popup">
             <div class="tips-header">
@@ -823,6 +1082,34 @@
                     </a>
                 </div>
             </div>
+            
+            <!-- New Mudra Section -->
+            <div class="mudra-section">
+                <h3 class="tips-section-title">Hand Mudras for Happiness</h3>
+                <div class="mudra-container">
+                    <a href="https://cdn.jwplayer.com/previews/j4qWCD6a" target="_blank" class="mudra-card">
+                        <div class="mudra-icon">🙏</div>
+                        <div class="mudra-name">Anjali Mudra</div>
+                        <div class="mudra-benefit">Brings balance and harmony</div>
+                    </a>
+                    <a href="https://www.tummee.com/yoga-poses/prana-mudra" target="_blank" class="mudra-card">
+                        <div class="mudra-icon">🤲</div>
+                        <div class="mudra-name">Prana Mudra</div>
+                        <div class="mudra-benefit">Enhances vitality and joy</div>
+                    </a>
+                    <a href="https://youtube.com/shorts/_I3LCrmhOis?si=bgs8Dboyye9tpvwf" target="_blank" class="mudra-card">
+                        <div class="mudra-icon">👌</div>
+                        <div class="mudra-name">Gyan Mudra</div>
+                        <div class="mudra-benefit">Promotes peace and wisdom</div>
+                    </a>
+                    <a href="https://youtube.com/shorts/6ROAQZh--NQ?si=oweTZD8WJd01xYVu" target="_blank" class="mudra-card">
+                        <div class="mudra-icon">🤟</div>
+                        <div class="mudra-name">Hakini Mudra</div>
+                        <div class="mudra-benefit">Boosts concentration and calmness</div>
+                    </a>
+                </div>
+            </div>
+            
         </div>
     </div>
 
@@ -1183,3 +1470,4 @@
     </script>
 </body>
 </html>
+
